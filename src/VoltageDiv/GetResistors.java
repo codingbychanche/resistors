@@ -24,17 +24,23 @@ public class GetResistors {
 	public static List<Double> ofSeries(double e) {
 		double r = 1;
 		double rLast = 1;
-		
+		int ddigits;
+
+		if (e >= 48)
+			ddigits = 2;
+		else
+			ddigits = 1;
+
 		List<Double> rSeries = new ArrayList<>();
 
 		rSeries.add(1.0); // Every series begin with 1 Ohm!
 
 		for (int i = 1; i < e; i++) {
 			r = rLast * getKValueForSeries(e);
-			
-			BigDecimal rD=new BigDecimal(r);
-			BigDecimal rRounded=rD.setScale(1,RoundingMode.HALF_DOWN);
-			
+
+			BigDecimal rD = new BigDecimal(r);
+			BigDecimal rRounded = rD.setScale(ddigits, RoundingMode.UP);
+
 			rSeries.add(rRounded.doubleValue());
 			rLast = r;
 		}
@@ -80,14 +86,14 @@ public class GetResistors {
 				int pow = 1;
 				for (int i = 1; i <= 8; i++) {
 					if (isInRangeWithinPercentage(allowedError_P, rToTest, s * pow)) {
-						ResistorResult r = new ResistorResult(s * pow, e, true);
+						ResistorResult r = new ResistorResult(s * pow, rToTest, e, true);
 						return r;
 					}
 					pow = pow * 10;
 				}
 			}
 		}
-		ResistorResult r = new ResistorResult(0, 0, false);
+		ResistorResult r = new ResistorResult(0, rToTest, 0, false);
 		return r;
 	}
 

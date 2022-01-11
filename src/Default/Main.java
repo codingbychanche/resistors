@@ -11,16 +11,21 @@ public class Main {
 			
 		// Show al values for a given series...
 		List <Double>rSeries=new ArrayList<>();
-		rSeries=GetResistors.ofSeries(3);
+		int eSeries=12;
+		rSeries=GetResistors.ofSeries(eSeries);
+		
+		System.out.println("Series "+eSeries);
 		for (double r:rSeries)
-			System.out.println(r);
+			System.out.println(r+" Ohms");
+		
+		System.out.println();
 		
 		// Check if a given value with an given error margin in percent
 		// can be found in any of the series E3..E96
-		ResistorResult r=GetResistors.getRValueClosesdTo(335,2);
+		ResistorResult r=GetResistors.getRValueClosesdTo(93.67,5);
 		
 		if (r.found)
-			System.out.println("Found:"+r.getResistorValue_Ohms()+" Ohms found in:"+r.getBelongsToESeries());
+			System.out.println("Trying to find value closest to:"+r.getGivenResistorValue_Ohms() +" Ohms.   Found:"+r.getFoundResistorValue_Ohms()+" Ohms . Actual error:"+r.getActualError_P() +"%    found in Series E"+r.getBelongsToESeries());
 		else
 			System.out.println("No matching standart value found");
 		
