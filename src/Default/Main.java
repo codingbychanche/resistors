@@ -3,6 +3,7 @@ package Default;
 import java.util.ArrayList;
 import java.util.List;
 
+import VoltageDiv.Divider;
 import VoltageDiv.GetResistors;
 import VoltageDiv.ResistorResult;
 
@@ -25,9 +26,17 @@ public class Main {
 		ResistorResult r=GetResistors.getRValueClosesdTo(93.67,5);
 		
 		if (r.found)
-			System.out.println("Trying to find value closest to:"+r.getGivenResistorValue_Ohms() +" Ohms.   Found:"+r.getFoundResistorValue_Ohms()+" Ohms . Actual error:"+r.getActualError_P() +"%    found in Series E"+r.getBelongsToESeries());
+			System.out.println("Trying to find value closest to:"+r.getGivenResistorValue_Ohms() +" Ohms.   Found:"+r.getFoundResistorValue_Ohms()+" Ohms . Actual error:"+r.getActualError_P() +"%    Found in Series E"+r.getBelongsToESeries());
 		else
-			System.out.println("No matching standart value found");
+			System.out.println("No matching standard value found");
+		
+		System.out.println("");
+		
+		// Voltage divider
+		double vIn_V=8.5;
+		double vOut_V=0.8;
+		System.out.println("Input voltage="+vIn_V+"V.    Output voltage="+vOut_V);
+		Divider.findResistors(vIn_V,vOut_V);
 		
 	}
 }

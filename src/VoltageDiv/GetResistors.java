@@ -20,6 +20,9 @@ public class GetResistors {
 	 * @param e Series designator (E3,E6....E96).
 	 * @return A {@link List} of all resistors matching the given series. Values are
 	 *         rounded to 1 decimal place.
+	 * 
+	 *         TODO: Rounding good, but not perfect. E.g. 2.06 Ohms in E48=> wrong
+	 *         true val= 2.05
 	 */
 	public static List<Double> ofSeries(double e) {
 		double r = 1;
