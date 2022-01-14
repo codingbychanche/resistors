@@ -1,6 +1,7 @@
 package VoltageDiv;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,7 +44,6 @@ public class GetResistors {
 
 			BigDecimal rD = new BigDecimal(r);
 			BigDecimal rRounded = rD.setScale(ddigits, RoundingMode.UP);
-
 			rSeries.add(rRounded.doubleValue());
 			rLast = r;
 		}
@@ -57,9 +57,11 @@ public class GetResistors {
 	 * @return The k- value for the given series.
 	 * 
 	 */
-	public static double getKValueForSeries(double e) {
-		double kVal = Math.pow(10, 1 / e);
+	public static float getKValueForSeries(double e) {
+		float kVal = (float)Math.pow(10, 1 / e);
 		return kVal;
+		
+		
 	}
 
 	/**
