@@ -30,15 +30,16 @@ public class Divider {
 	 *                         and standard value found in any of the standard
 	 *                         series.
 	 */
-	public static void findResistors(double vIn_V, double vOut_V, double maxTolErrForR2_P) {
+	public static DividerResults findResistors(double vIn_V, double vOut_V, double maxTolErrForR2_P) {
 		double ratio = vOut_V / vIn_V;
 		double r1Calc_Ohms = 1;
 		double r2Calc_Ohms = (1 - ratio) / ratio;
-
 		double rCalc;
-		ResistorResult res;
+		ResistorResult foundStandardValueForR2_Ohm;
 		double r2_Ohms;
 		double outputVoltage_V;
+		DividerResults dividerResults=new DividerResults();
+		
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
 		// Loop through all series
@@ -49,20 +50,30 @@ public class Divider {
 			for (double r1 : series) {
 				rCalc = r2Calc_Ohms * r1;
 
-				// Check if r is availabe in any of the standard series
-				res = GetResistors.getRValueClosesdTo(rCalc, maxTolErrForR2_P);
-				if (res.found()) {
-					r2_Ohms = res.getFoundResistorValue_Ohms();
+				// Check if r is available in any of the standard series
+				foundStandardValueForR2_Ohm = GetResistors.getRValueClosestTo(rCalc, maxTolErrForR2_P);
+				if (foundStandardValueForR2_Ohm.found()) {
+					r2_Ohms = foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms();
 
 					outputVoltage_V=getOutputVoltage_V(vIn_V,r1,r2_Ohms);
 
-					System.out.println("R1=" + r1 + " Ohm (Series E" + lookUpR1InSeries + ")      R2=" + r2_Ohms
-							+ " Ohms (Series E" + res.getBelongsToESeries() + ")    Error:" + res.getActualError_P()
-							+ " (calc r2 was:" + rCalc + ")    Resulting output voltage=" + outputVoltage_V + " V");
+					//System.out.println("R1=" + r1 + " Ohm (Series E" + lookUpR1InSeries + ")      R2=" + r2_Ohms
+							//+ " Ohms (Series E" + res.getBelongsToESeries() + ")    Error:" + res.getActualError_P()
+							//+ " (calc r2 was:" + rCalc + ")    Resulting output voltage=" + outputVoltage_V + " V");
+					
+					DividerResult result=new DividerResult(
+							outputVoltage_V,
+							r1,r2_Ohms,
+							lookUpR1InSeries,
+							foundStandardValueForR2_Ohm.belongsToESeries,
+							foundStandardValueForR2_Ohm.getActualError_P(),
+							0);
+					
+					dividerResults.addResult(result);
 				}
 			}
 		}
-
+		return dividerResults;
 	}
 	
 	/**

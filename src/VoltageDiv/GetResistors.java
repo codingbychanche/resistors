@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A collection of basic formulas.
+ * A collection of basic formulas for resistors.
  * 
  * @author Berthold
  *
@@ -20,10 +20,14 @@ public class GetResistors {
 	 * 
 	 * @param e Series designator (E3,E6....E96).
 	 * @return A {@link List} of all resistors matching the given series. Values are
-	 *         rounded to 1 decimal place.
+	 *         rounded to 1 or decimal places depending on the series chosen.
 	 * 
 	 *         TODO: Rounding good, but not perfect. E.g. 2.06 Ohms in E48=> wrong
-	 *         true val= 2.05
+	 *         true val= 2.05. This seems to be the case because actually standard
+	 *         resistors available in series E24 do not always match the calculated
+	 *         value:
+	 *         <p>
+	 *         https://en.wikipedia.org/wiki/E_series_of_preferred_numbers
 	 */
 	public static List<Double> ofSeries(double e) {
 		double r = 1;
@@ -58,24 +62,24 @@ public class GetResistors {
 	 * 
 	 */
 	public static float getKValueForSeries(double e) {
-		float kVal = (float)Math.pow(10, 1 / e);
+		float kVal = (float) Math.pow(10, 1 / e);
 		return kVal;
-		
-		
+
 	}
 
 	/**
-	 * Gets the standart value of a resistor from any of the series E3..E96 which is
+	 * Gets the standard value of a resistor from any of the series E3..E96 which is
 	 * within the given error margin.
 	 * 
-	 * @param rToTest        Value of resistor in ohms to check.
+	 * @param rToTest        Value of resistor in Ohm to check.
 	 * @param allowedError_P Allowed error margin in percent.
-	 * @return The standart value for the resistor in ohms found in series E3..E96
+	 * @return The standard value for the resistor in Ohm found in series E3..E96
 	 *         for which the given resistor value matches and the series to which
 	 *         this resistor belongs to. The result is given inside an instance of
-	 *         {@link ResistorResult}. The first series found will be returned.
+	 *         {@link ResistorResult}. The first series in which the resistor value
+	 *         could be found will be returned.
 	 */
-	public static ResistorResult getRValueClosesdTo(double rToTest, double allowedError_P) {
+	public static ResistorResult getRValueClosestTo(double rToTest, double allowedError_P) {
 		List<Double> rStandard = new ArrayList<>();
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
@@ -105,19 +109,19 @@ public class GetResistors {
 	/**
 	 * Checks if a given value is inside an allowed error margin.
 	 * 
-	 * @param allowedError_P Error marign in percent.
+	 * @param allowedError_P Error margin in percent.
 	 * @param rToTest        The value to be tested.
-	 * @param rStandart      The value to be testet against
+	 * @param rStandard      The value tested if it matches.
 	 * @return True if the value to be tested matches. False if not.<br>
-	 *         E.g. Given: 4.35, error margin is 2%. Value to be tested against:
+	 *         E.g. Given: 4.35, error margin is 2%. Value to be tested:
 	 *         4.3<br>
 	 *         Lower boundary: 4.3-4.3*(2/100)=4.21<br>
 	 *         Upper boundary: 4.3*(1+(2/100))=4.38 => true!<br>
 	 * 
 	 */
-	public static boolean isInRangeWithinPercentage(double allowedError_P, double rToTest, double rStandart) {
+	public static boolean isInRangeWithinPercentage(double allowedError_P, double rToTest, double rStandard) {
 		double p = allowedError_P / 100;
-		if (rToTest >= rStandart - (rStandart * p) && rToTest <= rStandart * (1 + p))
+		if (rToTest >= rStandard - (rStandard * p) && rToTest <= rStandard * (1 + p))
 			return true;
 		return false;
 	}
