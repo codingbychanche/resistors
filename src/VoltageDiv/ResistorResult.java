@@ -4,7 +4,9 @@ package VoltageDiv;
  * Holds a result for a resistor value found inside
  * in any of the series E3..E96
  * 
- * @author Berthold
+ * @author Berthold<p>
+ * 
+ * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
  *
  */
 public class ResistorResult {

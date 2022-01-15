@@ -38,7 +38,7 @@ public class Divider {
 		ResistorResult foundStandardValueForR2_Ohm;
 		double r2_Ohms;
 		double outputVoltage_V;
-		DividerResults dividerResults=new DividerResults();
+		DividerResults dividerResults=new DividerResults(vIn_V,vOut_V,maxTolErrForR2_P);
 		
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
@@ -66,7 +66,6 @@ public class Divider {
 							r1,r2_Ohms,
 							lookUpR1InSeries,
 							foundStandardValueForR2_Ohm.belongsToESeries,
-							foundStandardValueForR2_Ohm.getActualError_P(),
 							0);
 					
 					dividerResults.addResult(result);

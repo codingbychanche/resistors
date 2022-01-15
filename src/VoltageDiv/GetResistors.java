@@ -10,7 +10,9 @@ import java.util.List;
 /**
  * A collection of basic formulas for resistors.
  * 
- * @author Berthold
+ * @author Berthold<p>
+ * 
+ * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
  *
  */
 public class GetResistors {

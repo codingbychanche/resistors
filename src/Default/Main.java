@@ -9,6 +9,14 @@ import VoltageDiv.DividerResults;
 import VoltageDiv.GetResistors;
 import VoltageDiv.ResistorResult;
 
+/**
+ * Demo for the {@link VoltageDiv}- class.
+ * 
+ * @author Berthold<p>
+ * 
+ * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
+ *
+ */
 public class Main {
 	public static void main(String args[]) {
 		//
@@ -39,13 +47,13 @@ public class Main {
 		// Voltage divider
 		//
 		// Try to find r1 and r2 for the given in- and output voltages.
-		double vIn_V=8.5;
-		double vOut_V=5.3;
-		System.out.println("Input voltage="+vIn_V+"V.    Output voltage="+vOut_V);
-		DividerResults result=new DividerResults();
+		double vIn_V=15.56;
+		double vOut_V=1.79;
+		double tolarableErrorForR2_P=0.009;
 		
-		double tolarableError_P=0.0009;
-		result=Divider.findResistors(vIn_V,vOut_V,tolarableError_P);
+		DividerResults result=new DividerResults(vIn_V,vOut_V,tolarableErrorForR2_P);
+		result=Divider.findResistors(vIn_V,vOut_V,tolarableErrorForR2_P);
+		System.out.println("Input voltage="+result.getInputVoltage_V()+"V.    Output voltage="+result.getOutputVoltage_V()+" tolarable error for r2:"+result.getTolarableErrorForR2_P()+"%");
 		
 		// Show results, if any.....
 		List <DividerResult> listOfResults=new ArrayList<>();
@@ -55,10 +63,9 @@ public class Main {
 				System.out.println("R1="+dr.getR1_V()+" Ohm (E"+dr.getR1FoundInSeries()+
 						")  R2="+dr.getR2_V()+" Ohm (E"+dr.getR2FoundInSeries()+"  deviation from calculated:"+dr.getErrorForR2_P()+"%)"+
 						" Resulting Output voltage:"+dr.getvOutCalc_V());
-				
 			}
 		} else {
-			System.out.println("For the allowed deviation of r2 between the calculated and the standard value (you chose:"+tolarableError_P+"%) was no solution found.");
+			System.out.println("For the allowed deviation of r2 between the calculated and the standard value (you chose:"+tolarableErrorForR2_P+"%) was no solution found.");
 		}
 	}
 }

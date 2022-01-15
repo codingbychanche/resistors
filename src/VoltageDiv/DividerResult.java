@@ -7,7 +7,9 @@ package VoltageDiv;
  * {@link DividerResults} class which has various methods to evaluate all the
  * results....
  * 
- * @author Berthold
+ * @author Berthold<p>
+ * 
+ * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
  *
  */
 public class DividerResult {
@@ -35,14 +37,13 @@ public class DividerResult {
 	 *                        for r1 and r2.
 	 */
 	public DividerResult(double vOutCalc_V, double r1_V, double r2_V, int r1FoundInSeries,
-			int r2FoundInSeries, double errorForR2_P, double errorForVout_P) {
+			int r2FoundInSeries, double errorForVout_P) {
 		super();
 		this.vOutCalc_V = vOutCalc_V;
 		this.r1_V = r1_V;
 		this.r2_V = r2_V;
 		this.r1FoundInSeries = r1FoundInSeries;
 		this.r2FoundInSeries = r2FoundInSeries;
-		this.errorForR2_P = errorForR2_P;
 		this.errorForVout_P = errorForVout_P;
 	}
 
