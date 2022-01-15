@@ -5,7 +5,9 @@ import java.util.List;
 /**
  * A Voltage Divider.
  * 
- * @author Berthold
+ * @author Berthold<p>
+ * 
+ * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
  *
  */
 public class Divider {
