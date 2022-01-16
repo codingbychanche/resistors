@@ -2,7 +2,7 @@ package VoltageDiv;
 
 /**
  * Contains a single results of the {@link Divider.findResistors} method. Since
- * for every voltage divider there is always more than one solutions, an
+ * for every voltage divider there is always more than one solution, an
  * instance of this class should be added to an instance of the
  * {@link DividerResults} class which has various methods to evaluate all the
  * results....

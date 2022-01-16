@@ -34,7 +34,6 @@ public class Divider {
 	 */
 	public static DividerResults findResistors(double vIn_V, double vOut_V, double maxTolErrForR2_P) {
 		double ratio = vOut_V / vIn_V;
-		double r1Calc_Ohms = 1;
 		double r2Calc_Ohms = (1 - ratio) / ratio;
 		double rCalc;
 		ResistorResult foundStandardValueForR2_Ohm;
