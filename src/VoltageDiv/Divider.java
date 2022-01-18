@@ -5,9 +5,11 @@ import java.util.List;
 /**
  * A Voltage Divider.
  * 
- * @author Berthold<p>
+ * @author Berthold
+ *         <p>
  * 
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
+ *         Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
+ *         4.0)
  *
  */
 public class Divider {
@@ -26,22 +28,21 @@ public class Divider {
 	 * series meeting the condition for the given in- and output voltage.
 	 * 
 	 * 
-	 * @param vIn_V            Inputvoltage in volts.
-	 * @param vOut_V           Output voltage in volts.
-	 * @param maxTolErrForR2_P Biggest tolarable error between calclated value of R2
-	 *                         and standard value found in any of the standard
-	 *                         series.
+	 * @param vIn_V  Inputvoltage in volts.
+	 * @param vOut_V Output voltage in volts.
 	 */
-	public static DividerResults findResistors(double vIn_V, double vOut_V, double maxTolErrForR2_P) {
+	public static DividerResults findResistors(double vIn_V, double vOut_V) {
 		double ratio = vOut_V / vIn_V;
 		double r2Calc_Ohms = (1 - ratio) / ratio;
 		double rCalc;
 		ResistorResult foundStandardValueForR2_Ohm;
 		double r2_Ohms;
-		double outputVoltage_V;
-		DividerResults dividerResults=new DividerResults(vIn_V,vOut_V,maxTolErrForR2_P);
-		
+		double resultingOutputVoltage_V; //Actual output voltage resulting from chosen R2.
+		DividerResults dividerResults = new DividerResults(vIn_V, vOut_V);
+
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
+
+		double maxTolErrForR2_P=20;
 
 		// Loop through all series
 		for (int lookUpR1InSeries : eSeries) {
@@ -56,18 +57,14 @@ public class Divider {
 				if (foundStandardValueForR2_Ohm.found()) {
 					r2_Ohms = foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms();
 
-					outputVoltage_V=getOutputVoltage_V(vIn_V,r1,r2_Ohms);
-
-					//System.out.println("R1=" + r1 + " Ohm (Series E" + lookUpR1InSeries + ")      R2=" + r2_Ohms
-							//+ " Ohms (Series E" + res.getBelongsToESeries() + ")    Error:" + res.getActualError_P()
-							//+ " (calc r2 was:" + rCalc + ")    Resulting output voltage=" + outputVoltage_V + " V");
+					resultingOutputVoltage_V=getOutputVoltage_V(vIn_V,r1,r2_Ohms);
 					
 					DividerResult result=new DividerResult(
-							outputVoltage_V,
+							vOut_V,
+							resultingOutputVoltage_V,							
 							r1,r2_Ohms,
 							lookUpR1InSeries,
-							foundStandardValueForR2_Ohm.belongsToESeries,
-							0);
+							foundStandardValueForR2_Ohm.getBelongsToESeries());
 					
 					dividerResults.addResult(result);
 				}
@@ -75,16 +72,16 @@ public class Divider {
 		}
 		return dividerResults;
 	}
-	
+
 	/**
 	 * Calculates the output voltage of a divider.
 	 * 
-	 * @param vIn_V Input voltage in Volts.
+	 * @param vIn_V   Input voltage in Volts.
 	 * @param r1_Ohms Value for first resistor in Ohms.
 	 * @param r2_Ohms Value for second resistor in Ohms.
 	 * @return Output voltage in Volts.
 	 */
-	public static double getOutputVoltage_V(double vIn_V,double r1_Ohms,double r2_Ohms) {
+	public static double getOutputVoltage_V(double vIn_V, double r1_Ohms, double r2_Ohms) {
 		return (r1_Ohms / (r1_Ohms + r2_Ohms)) * vIn_V;
 	}
 }

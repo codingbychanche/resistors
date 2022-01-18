@@ -1,37 +1,37 @@
 package VoltageDiv;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Contains all results of the {@link Divider.findResistors} method.
  * 
- * @author Berthold<p>
+ * @author Berthold
+ *         <p>
  * 
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
+ *         Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
+ *         4.0)
  *
  */
 public class DividerResults {
 	private boolean hasResult;
-	private double inputVoltage_V,outputVoltage_V;
-	private double tolarableErrorForR2_P; 
+	private double inputVoltage_V, outputVoltage_V;
+	private double tolarableErrorForR2_P;
 	private List<DividerResult> listOfResults;
 
 	/**
 	 * Contains any results found by the {@link Divider.findResistors} method.
 	 * 
-	 * @param inutVoltage_V The input voltage for the divider in volts.
+	 * @param inutVoltage_V   The input voltage for the divider in volts.
 	 * @param outputVoltage_V The output voltage in volts.
-	 * @param tolarableErrorForR2_P Tolarable deviation between the calculated value for r2 and the found standard value.
-	 * @param inputVoltage_V 
+	 * @param inputVoltage_V
 	 */
-	
-	public DividerResults(double inputVoltage_V,double outputVoltage_V,double tolarableErrorForR2_P) {
+	public DividerResults(double inputVoltage_V, double outputVoltage_V) {
 		listOfResults = new ArrayList<>();
 		hasResult = false;
-		this.inputVoltage_V=inputVoltage_V;
-		this.outputVoltage_V=outputVoltage_V;
-		this.tolarableErrorForR2_P=tolarableErrorForR2_P;
+		this.inputVoltage_V = inputVoltage_V;
+		this.outputVoltage_V = outputVoltage_V;
 	}
 
 	/**
@@ -48,9 +48,16 @@ public class DividerResults {
 	 * Gets the list of results.
 	 * 
 	 * @return A {@link List} of results of a calculated voltage divider containing
-	 *         one or more instances of {@link DividerResult}.
+	 *         one or more instances of {@link DividerResult}.<br>
+	 *         The list is sorted by the error between calculated output voltage
+	 *         resulting from the chosen resistors and the output voltage wished.
+	 *         <p>
+	 *         R1 and R2 with smallest resulting error in output voltage is the
+	 *         first element in this list.
+	 * 
 	 */
 	public List<DividerResult> getListOfResults() {
+		Collections.sort(listOfResults);
 		return listOfResults;
 	}
 
@@ -80,14 +87,4 @@ public class DividerResults {
 	public void setOutputVoltage_V(double outputVoltage_V) {
 		this.outputVoltage_V = outputVoltage_V;
 	}
-
-	public double getTolarableErrorForR2_P() {
-		return tolarableErrorForR2_P;
-	}
-
-	public void setTolarableErrorForR2_P(double tolarableErrorForR2_P) {
-		this.tolarableErrorForR2_P = tolarableErrorForR2_P;
-	}
-	
-	
 }
