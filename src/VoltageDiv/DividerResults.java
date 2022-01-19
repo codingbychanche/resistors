@@ -62,6 +62,17 @@ public class DividerResults {
 	}
 
 	/**
+	 * Return the solution with the smallest error in output voltage. Since the list
+	 * is in ascending order, the first element is returned.
+	 * 
+	 * @return A instance of {@link DividerResult} with the smallest error in output
+	 *         voltage
+	 */
+	public DividerResult getSolutionWsmallestErrInOutputVoltage() {
+		return this.listOfResults.get(0);
+	}
+
+	/**
 	 * Flag declaring if this instance contains at least one result.
 	 * 
 	 * 
