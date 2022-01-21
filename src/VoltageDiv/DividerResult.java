@@ -1,10 +1,11 @@
 package VoltageDiv;
 
 /**
- * Contains a single results of the {@link Divider.findResistors} method. Since
- * for every voltage divider there is always more than one solution, an instance
- * of this class should be added to an instance of the {@link DividerResults}
- * class which has various methods to evaluate all the results....
+ * Contains a single result of the {@link Divider.findResistors} method. Since
+ * for every voltage divider there are always more than one solution, an
+ * instance of this class should be added to an instance of the
+ * {@link DividerResults} class which has various methods to evaluate all the
+ * results....
  * 
  * @author Berthold
  *         <p>
@@ -13,9 +14,9 @@ package VoltageDiv;
  *         4.0)
  *
  */
-public class DividerResult implements Comparable <DividerResult>{
+public class DividerResult implements Comparable<DividerResult> {
 	private double vOut_V;
-	private double vOutCalc_V; // Resulting output voltage for the standard value f r2
+	private double vOutCalc_V; // Resulting output voltage for the standard value f R2
 	private double r1_V, r2_V;
 	private int r1FoundInSeries, r2FoundInSeries;
 
@@ -32,9 +33,10 @@ public class DividerResult implements Comparable <DividerResult>{
 	 *                        resulting output voltage for the standard values found
 	 *                        for r1 and r2.
 	 */
-	public DividerResult(double vOut_V,double vOutCalc_V, double r1_V, double r2_V, int r1FoundInSeries, int r2FoundInSeries) {
+	public DividerResult(double vOut_V, double vOutCalc_V, double r1_V, double r2_V, int r1FoundInSeries,
+			int r2FoundInSeries) {
 		super();
-		this.vOut_V=vOut_V;
+		this.vOut_V = vOut_V;
 		this.vOutCalc_V = vOutCalc_V;
 		this.r1_V = r1_V;
 		this.r2_V = r2_V;
@@ -90,19 +92,29 @@ public class DividerResult implements Comparable <DividerResult>{
 		this.r2FoundInSeries = r2FoundInSeries;
 	}
 
+	/**
+	 * Determines the error between initial Vout and found Vout.
+	 * 
+	 * @return A {@link Double} value containing the error in percent, rounded to three
+	 *         decimal places.
+	 */
 	public double getActualErrorInOutputVoltage_P() {
-		if (vOutCalc_V>vOut_V)
-			 return 100-((vOut_V/vOutCalc_V)*100);
-		if (vOutCalc_V<vOut_V)
-			return (100-(vOut_V/vOutCalc_V)*100)*-1;
-		return 0;
+		int decimalPlaces = 3;
+		return MathHelper.getError_P(vOutCalc_V, vOut_V, decimalPlaces);
 	}
 
+	/**
+	 * Sort.<p>
+	 * 
+	 * Sorts instances of this by the size if the error between the<br>
+	 * initial Vout and Vout resulting from the found combinations of<br>
+	 * R1 and R2 in ascending order.
+	 */
 	@Override
 	public int compareTo(DividerResult r) {
-		if (this.getActualErrorInOutputVoltage_P()>r.getActualErrorInOutputVoltage_P())
+		if (this.getActualErrorInOutputVoltage_P() > r.getActualErrorInOutputVoltage_P())
 			return 1;
-		if (this.getActualErrorInOutputVoltage_P()<r.getActualErrorInOutputVoltage_P())
+		if (this.getActualErrorInOutputVoltage_P() < r.getActualErrorInOutputVoltage_P())
 			return -1;
 		return 0;
 	}

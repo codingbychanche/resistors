@@ -1,5 +1,7 @@
 package VoltageDiv;
 
+import java.math.RoundingMode;
+
 /**
  * Holds a result for a resistor value found inside in any of the series E3..E96
  * 
@@ -25,13 +27,16 @@ public class ResistorResult {
 		this.belongsToESeries = belongsToESeries;
 		this.found = found;
 	}
-	
+
+	/**
+	 * Calculates the error between the value searched and
+	 * the standard value available rounded to two decimal places.
+	 * 
+	 * @return Error in percent.
+	 */
 	public double getActualError_P() {
-		if (foundResistorValue_Ohms > givenResistorValue_Ohms)
-			return (100 - (givenResistorValue_Ohms / foundResistorValue_Ohms) * 100);
-		if (foundResistorValue_Ohms < givenResistorValue_Ohms)
-			return (100 - (foundResistorValue_Ohms / givenResistorValue_Ohms) * 100) * -1;
-		return 0;
+		int dDigits=2;
+		return MathHelper.getError_P(foundResistorValue_Ohms,givenResistorValue_Ohms,dDigits);
 	}
 
 	public double getFoundResistorValue_Ohms() {

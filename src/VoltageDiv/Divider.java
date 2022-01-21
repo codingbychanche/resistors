@@ -1,5 +1,6 @@
 package VoltageDiv;
 
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -10,26 +11,32 @@ import java.util.List;
  * 
  *         Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
  *         4.0)
- *
  */
 public class Divider {
 
 	/**
 	 * Finds a series of resistors which meet the condition for the given in- and
-	 * output voltage of a divider.
+	 * output voltage of a voltage divider.
 	 * <p>
-	 * The initial solution is found by assuming that R1=1 Ohm
+	 * The initial solution is found by assuming that R1=1 Ohm.
 	 * <p>
-	 * By substituting R2 with the known ratio between Vin and Vout (r) we find the
+	 * By substituting R2 with the known ratio between Vin and Vout (=r) we find the
 	 * following formula for R2:<br>
 	 * [(1-r)/r] x R1 = R2
 	 * <p>
-	 * The result is a ist with any possible combination of resistors across all e-
-	 * series meeting the condition for the given in- and output voltage.
-	 * 
+	 * The result is a instance of {@link DividerResults} containing any possible
+	 * combinations of resistors across all E- series meeting the condition for the
+	 * given in- and output voltage.
+	 * <p>
+	 * R1 is always a standard value for which the algorithm tries to find a
+	 * matching standard value for R2 in order to get the desired output voltage.
+	 * <p>
+	 * The maximum error margin for R2 is set to +/- 20 within the algorithm tries to find
+	 * the best solution for the output voltage. 
 	 * 
 	 * @param vIn_V  Inputvoltage in volts.
 	 * @param vOut_V Output voltage in volts.
+	 * @return An instance of {@link DividerResults} containing the result.
 	 */
 	public static DividerResults findResistors(double vIn_V, double vOut_V) {
 		double ratio = vOut_V / vIn_V;
@@ -37,12 +44,13 @@ public class Divider {
 		double rCalc;
 		ResistorResult foundStandardValueForR2_Ohm;
 		double r2_Ohms;
-		double resultingOutputVoltage_V; //Actual output voltage resulting from chosen R2.
+		double resultingOutputVoltage_V; // Actual output voltage resulting from chosen R2.
 		DividerResults dividerResults = new DividerResults(vIn_V, vOut_V);
 
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
-		double maxTolErrForR2_P=20;
+		double maxTolErrForR2_P = 20;
+		int decimalPlaces = 3;
 
 		// Loop through all series
 		for (int lookUpR1InSeries : eSeries) {
@@ -57,15 +65,12 @@ public class Divider {
 				if (foundStandardValueForR2_Ohm.found()) {
 					r2_Ohms = foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms();
 
-					resultingOutputVoltage_V=getOutputVoltage_V(vIn_V,r1,r2_Ohms);
-					
-					DividerResult result=new DividerResult(
-							vOut_V,
-							resultingOutputVoltage_V,							
-							r1,r2_Ohms,
-							lookUpR1InSeries,
-							foundStandardValueForR2_Ohm.getBelongsToESeries());
-					
+					resultingOutputVoltage_V = MathHelper.round(getOutputVoltage_V(vIn_V, r1, r2_Ohms), decimalPlaces,
+							RoundingMode.UP);
+
+					DividerResult result = new DividerResult(vOut_V, resultingOutputVoltage_V, r1, r2_Ohms,
+							lookUpR1InSeries, foundStandardValueForR2_Ohm.getBelongsToESeries());
+
 					dividerResults.addResult(result);
 				}
 			}
