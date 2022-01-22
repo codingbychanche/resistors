@@ -1,15 +1,15 @@
 package VoltageDiv;
 
 /**
- * Contains a single result of the {@link Divider.findResistors} method. Since
- * for every voltage divider there are always more than one solution, an
- * instance of this class should be added to an instance of the
- * {@link DividerResults} class which has various methods to evaluate all the
- * results....
+ * Contains a single result for a given voltage divider,
+ * <p>
+ * 
+ * Since there is almost always more than one solution an instance of this class
+ * will be added to an instance of the {@link DividerResults} class which stores
+ * them in a {@link List} and facilitates various methods to evaluate them.
  * 
  * @author Berthold
  *         <p>
- * 
  *         Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
  *         4.0)
  *
@@ -95,8 +95,8 @@ public class DividerResult implements Comparable<DividerResult> {
 	/**
 	 * Determines the error between initial Vout and found Vout.
 	 * 
-	 * @return A {@link Double} value containing the error in percent, rounded to three
-	 *         decimal places.
+	 * @return A {@link Double} value containing the error in percent, rounded to
+	 *         three decimal places.
 	 */
 	public double getActualErrorInOutputVoltage_P() {
 		int decimalPlaces = 3;
@@ -104,11 +104,10 @@ public class DividerResult implements Comparable<DividerResult> {
 	}
 
 	/**
-	 * Sort.<p>
-	 * 
-	 * Sorts instances of this by the size if the error between the<br>
-	 * initial Vout and Vout resulting from the found combinations of<br>
-	 * R1 and R2 in ascending order.
+	 * Sort.
+	 * <p>
+	 * Sorts instances of this by the size of the error between the initial Vout and
+	 * Vout resulting from the found combinations of R1 and R2 in ascending order.
 	 */
 	@Override
 	public int compareTo(DividerResult r) {
