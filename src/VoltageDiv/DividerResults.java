@@ -19,6 +19,7 @@ public class DividerResults {
 	private double inputVoltage_V, outputVoltage_V;
 	private double tolarableErrorForR2_P;
 	private List<DividerResult> listOfResults;
+	private Long timeItTookIn_ms;
 
 	/**
 	 * Contains any results found by the {@link Divider.findResistors} method.
@@ -98,4 +99,14 @@ public class DividerResults {
 	public void setOutputVoltage_V(double outputVoltage_V) {
 		this.outputVoltage_V = outputVoltage_V;
 	}
+
+	public Long getTimeItTookIn_ms() {
+		return timeItTookIn_ms;
+	}
+
+	public void setTimeItTookIn_ms(Long timeItTookIn_s) {
+		this.timeItTookIn_ms = timeItTookIn_s;
+	}
+	
+	
 }

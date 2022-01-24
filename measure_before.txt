@@ -1,0 +1,46 @@
+R1=7.25 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.879 Voltage error:-2.334%
+R1=7.3 Ohm (E24)  R2=1.0 Ohm (E3) Resulting Output voltage:0.88 Voltage error:-2.223%
+R1=10.97 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.88 Voltage error:-2.223%
+R1=16.1 Ohm (E96)  R2=2.2 Ohm (E3) Resulting Output voltage:0.88 Voltage error:-2.223%
+R1=7.4 Ohm (E12)  R2=1.0 Ohm (E3) Resulting Output voltage:0.881 Voltage error:-2.112%
+R1=11.1 Ohm (E24)  R2=1.5 Ohm (E6) Resulting Output voltage:0.881 Voltage error:-2.112%
+R1=7.4 Ohm (E48)  R2=1.0 Ohm (E3) Resulting Output voltage:0.881 Voltage error:-2.112%
+R1=7.47 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.882 Voltage error:-2.0%
+R1=11.29 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.883 Voltage error:-1.889%
+R1=16.58 Ohm (E96)  R2=2.2 Ohm (E3) Resulting Output voltage:0.883 Voltage error:-1.889%
+R1=7.69 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.885 Voltage error:-1.667%
+R1=7.77 Ohm (E48)  R2=1.0 Ohm (E3) Resulting Output voltage:0.886 Voltage error:-1.556%
+R1=11.63 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.886 Voltage error:-1.556%
+R1=7.92 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.888 Voltage error:-1.334%
+R1=11.98 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.889 Voltage error:-1.223%
+R1=8.1 Ohm (E24)  R2=1.0 Ohm (E3) Resulting Output voltage:0.891 Voltage error:-1.0%
+R1=8.15 Ohm (E48)  R2=1.0 Ohm (E3) Resulting Output voltage:0.891 Voltage error:-1.0%
+R1=8.16 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.891 Voltage error:-1.0%
+R1=12.34 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.892 Voltage error:-0.889%
+R1=8.41 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.894 Voltage error:-0.667%
+R1=12.71 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.895 Voltage error:-0.556%
+R1=8.56 Ohm (E48)  R2=1.0 Ohm (E3) Resulting Output voltage:0.896 Voltage error:-0.445%
+R1=8.66 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.897 Voltage error:-0.334%
+R1=13.09 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.898 Voltage error:-0.223%
+R1=8.99 Ohm (E48)  R2=1.0 Ohm (E3) Resulting Output voltage:0.9 Voltage error:0.0%
+R1=8.92 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.9 Voltage error:0.0%
+R1=13.48 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.9 Voltage error:0.0%
+R1=9.0 Ohm (E12)  R2=1.0 Ohm (E3) Resulting Output voltage:0.901 Voltage error:0.111%
+R1=9.0 Ohm (E24)  R2=1.0 Ohm (E3) Resulting Output voltage:0.901 Voltage error:0.111%
+R1=9.18 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.902 Voltage error:0.222%
+R1=13.89 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.903 Voltage error:0.333%
+R1=9.44 Ohm (E48)  R2=1.0 Ohm (E3) Resulting Output voltage:0.905 Voltage error:0.553%
+R1=9.46 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.905 Voltage error:0.553%
+R1=14.31 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.906 Voltage error:0.663%
+R1=9.74 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.907 Voltage error:0.772%
+R1=14.73 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.908 Voltage error:0.882%
+R1=9.91 Ohm (E48)  R2=1.0 Ohm (E3) Resulting Output voltage:0.909 Voltage error:0.991%
+R1=10.0 Ohm (E24)  R2=1.0 Ohm (E3) Resulting Output voltage:0.91 Voltage error:1.099%
+R1=10.04 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.91 Voltage error:1.099%
+R1=15.18 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.911 Voltage error:1.208%
+R1=10.34 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.912 Voltage error:1.316%
+R1=15.63 Ohm (E96)  R2=1.5 Ohm (E6) Resulting Output voltage:0.913 Voltage error:1.424%
+R1=10.65 Ohm (E96)  R2=1.0 Ohm (E3) Resulting Output voltage:0.915 Voltage error:1.64%
+
+Smallest error in output voltage R1=7.25 Ohm     R2=1.0 Ohm    Vout=0.879
+Time it took:239s

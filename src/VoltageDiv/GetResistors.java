@@ -78,6 +78,12 @@ public class GetResistors {
 		List<Double> rStandard = new ArrayList<>();
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
+		int pow=1;
+		if (rToTest>=10) pow=10;
+		if (rToTest>=100) pow=100;
+		if (rToTest>=1000) pow=1000;
+		if (rToTest>=10000000) pow=1000000;
+		
 		// Loop through series
 		for (int e : eSeries) {
 
@@ -86,15 +92,10 @@ public class GetResistors {
 			// Loop through values in each series
 			for (double standardValueForR : rStandard) {
 
-				// Loop through powers of 10 for each series
-				int pow = 1;
-				for (int i = 1; i <= 8; i++) {
-					if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR * pow)) {
-						
-						ResistorResult r = new ResistorResult(standardValueForR * pow, rToTest, e, true);
-						return r;
-					}
-					pow = pow * 10;
+				if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR * pow)) {
+					
+					ResistorResult r = new ResistorResult(standardValueForR * pow, rToTest, e, true);
+					return r;
 				}
 			}
 		}

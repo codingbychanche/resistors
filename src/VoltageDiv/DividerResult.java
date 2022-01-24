@@ -111,9 +111,9 @@ public class DividerResult implements Comparable<DividerResult> {
 	 */
 	@Override
 	public int compareTo(DividerResult r) {
-		if (this.getActualErrorInOutputVoltage_P() > r.getActualErrorInOutputVoltage_P())
+		if (Math.abs(this.getActualErrorInOutputVoltage_P()) > Math.abs(r.getActualErrorInOutputVoltage_P()))
 			return 1;
-		if (this.getActualErrorInOutputVoltage_P() < r.getActualErrorInOutputVoltage_P())
+		if (Math.abs(this.getActualErrorInOutputVoltage_P()) < Math.abs(r.getActualErrorInOutputVoltage_P()))
 			return -1;
 		return 0;
 	}

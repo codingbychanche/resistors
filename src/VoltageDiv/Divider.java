@@ -31,21 +31,29 @@ public class Divider {
 	 * R1 is always a standard value for which the algorithm tries to find a
 	 * matching standard value for R2 in order to get the desired output voltage.
 	 * <p>
-	 * The maximum error margin for R2 is set to +/- 20 within the algorithm tries to find
-	 * the best solution for the output voltage. 
+	 * The maximum error margin for R2 is set to +/- 20 within the algorithm tries
+	 * to find the best solution for the output voltage.
 	 * 
 	 * @param vIn_V  Inputvoltage in volts.
 	 * @param vOut_V Output voltage in volts.
-	 * @return An instance of {@link DividerResults} containing the result.
+	 * @return An instance of {@link DividerResults} containing either one or more
+	 *         instances of {@link DividerResult} or none if no result was found or
+	 *         the input voltage was equal or lower than the output voltage.
 	 */
 	public static DividerResults findResistors(double vIn_V, double vOut_V) {
+
 		double ratio = vOut_V / vIn_V;
 		double r2Calc_Ohms = (1 - ratio) / ratio;
 		double rCalc;
 		ResistorResult foundStandardValueForR2_Ohm;
 		double r2_Ohms;
 		double resultingOutputVoltage_V; // Actual output voltage resulting from chosen R2.
+
+		// Create a new instance holding the result. If output voltage is bigger than
+		// the input voltage, return the empty result.
 		DividerResults dividerResults = new DividerResults(vIn_V, vOut_V);
+		if (vOut_V >= vIn_V)
+			return dividerResults;
 
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
@@ -53,6 +61,8 @@ public class Divider {
 		int decimalPlaces = 3;
 
 		// Loop through all series
+		Long startTimeIn_Ms = System.currentTimeMillis();
+
 		for (int lookUpR1InSeries : eSeries) {
 			List<Double> series = GetResistors.ofSeries(lookUpR1InSeries);
 
@@ -75,6 +85,8 @@ public class Divider {
 				}
 			}
 		}
+		Long endTimeIn_Ms = System.currentTimeMillis();
+		dividerResults.setTimeItTookIn_ms((endTimeIn_Ms - startTimeIn_Ms));
 		return dividerResults;
 	}
 
