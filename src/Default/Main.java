@@ -38,7 +38,11 @@ public class Main {
 		// Check if a given value with an given error margin in percent
 		// can be found in any of the series E3..E96
 		//
-		ResistorResult r = GetResistors.getRValueClosestTo(489, 5);
+		List <Integer> listOfSeriesExcluded=new ArrayList();
+		//excludeSeries.add(3);
+		//excludeSeries.add(6);
+		
+		ResistorResult r = GetResistors.getRValueClosestTo(489, 5,listOfSeriesExcluded);
 
 		if (r.found())
 			System.out.println("Trying to find value closest to:" + r.getGivenResistorValue_Ohms() + " Ohms.   Found:"
@@ -52,12 +56,12 @@ public class Main {
 		// Voltage divider
 		//
 		// Try to find r1 and r2 for the given in- and output voltages.
-		double vIn_V = 5.5;
-		double vOut_V = 3.3;
+		double vIn_V = 2;
+		double vOut_V = 1;
 		double tolarableErrorForR2_P = 20;
 
 		DividerResults result = new DividerResults(vIn_V, vOut_V);
-		result = Divider.findResistors(vIn_V, vOut_V);
+		result = Divider.findResistors(vIn_V, vOut_V,listOfSeriesExcluded);
 		System.out.println(
 				"Input voltage=" + result.getInputVoltage_V() + "V.    Output voltage=" + result.getOutputVoltage_V());
 

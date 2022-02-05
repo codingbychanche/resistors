@@ -59,43 +59,52 @@ public class GetResistors {
 	 */
 	public static double getKValueForSeries(double e) {
 		double kVal = Math.pow(10, 1 / e);
-		return MathHelper.round(kVal, 2,RoundingMode.UP);
+		return MathHelper.round(kVal, 2, RoundingMode.UP);
 	}
 
 	/**
 	 * Gets the standard value of a resistor from any of the series E3..E96 which is
 	 * within the given error margin.
 	 * 
-	 * @param rToTest        Value of resistor in Ohm to check.
-	 * @param allowedError_P Allowed error margin in percent.
+	 * @param rToTest               Value of resistor in Ohm to check.
+	 * @param allowedError_P        Allowed error margin in percent.
+	 * @param listOfSeriesToExclude The list consists of either no series or all
+	 *                              series not to be considered
 	 * @return The standard value for the resistor in Ohm found in series E3..E96
 	 *         for which the given resistor value matches and the series to which
 	 *         this resistor belongs to. The result is given inside an instance of
 	 *         {@link ResistorResult}. The first series in which the resistor value
 	 *         could be found will be returned.
 	 */
-	public static ResistorResult getRValueClosestTo(double rToTest, double allowedError_P) {
+	public static ResistorResult getRValueClosestTo(double rToTest, double allowedError_P,
+			List<Integer> listOfSeriesToExclude) {
+
 		List<Double> rStandard = new ArrayList<>();
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
-		int pow=1;
-		if (rToTest>=10) pow=10;
-		if (rToTest>=100) pow=100;
-		if (rToTest>=1000) pow=1000;
-		if (rToTest>=10000000) pow=1000000;
-		
+		int pow = 1;
+		if (rToTest >= 10)
+			pow = 10;
+		if (rToTest >= 100)
+			pow = 100;
+		if (rToTest >= 1000)
+			pow = 1000;
+		if (rToTest >= 10000000)
+			pow = 1000000;
+
 		// Loop through series
 		for (int e : eSeries) {
+			if (!listOfSeriesToExclude.contains(e)) {
+				rStandard = ofSeries(e);
 
-			rStandard = ofSeries(e);
+				// Loop through values in each series
+				for (double standardValueForR : rStandard) {
 
-			// Loop through values in each series
-			for (double standardValueForR : rStandard) {
+					if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR * pow)) {
 
-				if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR * pow)) {
-					
-					ResistorResult r = new ResistorResult(standardValueForR * pow, rToTest, e, true);
-					return r;
+						ResistorResult r = new ResistorResult(standardValueForR * pow, rToTest, e, true);
+						return r;
+					}
 				}
 			}
 		}

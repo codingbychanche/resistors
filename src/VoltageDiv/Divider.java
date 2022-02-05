@@ -1,6 +1,7 @@
 package VoltageDiv;
 
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,13 +35,15 @@ public class Divider {
 	 * The maximum error margin for R2 is set to +/- 20 within the algorithm tries
 	 * to find the best solution for the output voltage.
 	 * 
-	 * @param vIn_V  Inputvoltage in volts.
-	 * @param vOut_V Output voltage in volts.
+	 * @param vIn_V                Inputvoltage in volts.
+	 * @param vOut_V               Output voltage in volts.
+	 * @param listOfExcludedSeries For the result, none of these series are
+	 *                             considered.
 	 * @return An instance of {@link DividerResults} containing either one or more
 	 *         instances of {@link DividerResult} or none if no result was found or
 	 *         the input voltage was equal or lower than the output voltage.
 	 */
-	public static DividerResults findResistors(double vIn_V, double vOut_V) {
+	public static DividerResults findResistors(double vIn_V, double vOut_V, List<Integer> listOfExcludedSeries) {
 
 		double ratio = vOut_V / vIn_V;
 		double r2Calc_Ohms = (1 - ratio) / ratio;
@@ -64,29 +67,34 @@ public class Divider {
 		Long startTimeIn_Ms = System.currentTimeMillis();
 
 		for (int lookUpR1InSeries : eSeries) {
-			List<Double> series = GetResistors.ofSeries(lookUpR1InSeries);
 
-			// Get R1 from series and find matching R2
-			for (double r1 : series) {
-				rCalc = r2Calc_Ohms * r1;
+			// Check if this series is excluded, if so, do not consider this series.
+			if (!listOfExcludedSeries.contains(lookUpR1InSeries)) {
+				List<Double> series = GetResistors.ofSeries(lookUpR1InSeries);
+				// Get R1 from series and find matching R2
+				for (double r1 : series) {
+					rCalc = r2Calc_Ohms * r1;
 
-				// Check if r is available in any of the standard series
-				foundStandardValueForR2_Ohm = GetResistors.getRValueClosestTo(rCalc, maxTolErrForR2_P);
-				if (foundStandardValueForR2_Ohm.found()) {
-					r2_Ohms = foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms();
+					// Check if r is available in any of the standard series
+					foundStandardValueForR2_Ohm = GetResistors.getRValueClosestTo(rCalc, maxTolErrForR2_P,
+							listOfExcludedSeries);
+					if (foundStandardValueForR2_Ohm.found()) {
+						r2_Ohms = foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms();
 
-					resultingOutputVoltage_V = MathHelper.round(getOutputVoltage_V(vIn_V, r1, r2_Ohms), decimalPlaces,
-							RoundingMode.UP);
+						resultingOutputVoltage_V = MathHelper.round(getOutputVoltage_V(vIn_V, r1, r2_Ohms),
+								decimalPlaces, RoundingMode.UP);
 
-					DividerResult result = new DividerResult(vOut_V, resultingOutputVoltage_V, r1, r2_Ohms,
-							lookUpR1InSeries, foundStandardValueForR2_Ohm.getBelongsToESeries());
+						DividerResult result = new DividerResult(vOut_V, resultingOutputVoltage_V, r1, r2_Ohms,
+								lookUpR1InSeries, foundStandardValueForR2_Ohm.getBelongsToESeries());
 
-					dividerResults.addResult(result);
+						dividerResults.addResult(result);
+					}
 				}
 			}
 		}
 		Long endTimeIn_Ms = System.currentTimeMillis();
 		dividerResults.setTimeItTookIn_ms((endTimeIn_Ms - startTimeIn_Ms));
+
 		return dividerResults;
 	}
 
