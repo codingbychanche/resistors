@@ -102,13 +102,52 @@ public class GetResistors {
 
 					if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR * pow)) {
 
-						ResistorResult r = new ResistorResult(standardValueForR * pow, rToTest, e, true);
+						//
+						// We've found a matching resistor....
+						//
+						ResistorResult r = new ResistorResult(standardValueForR * pow, rToTest, e, getSeriesSpecificErrorMargin(e), true);
 						return r;
 					}
 				}
 			}
 		}
-		ResistorResult r = new ResistorResult(0, rToTest, 0, false);
+		//
+		// We've found nothing.....
+		//
+		ResistorResult r = new ResistorResult(0, rToTest, 0,0, false);
 		return r;
+	}
+
+	/**
+	 * Returns the specific error margin for the given E- series.
+	 * 
+	 * @param e The standard series (E3..E96).
+	 * @return Either 0 if no matching series was passed or the specific error
+	 *         margin in percent for the series passed.
+	 */
+
+	static private int getSeriesSpecificErrorMargin(int e) {
+
+		switch (e) {
+		case 3:
+			return 25; // Error is > +/- 20% so I choose 25%...
+
+		case 6:
+			return 20;
+
+		case 12:
+			return 10;
+
+		case 24:
+			return 5;
+
+		case 48:
+			return 2;
+
+		case 96:
+			return 1;
+
+		}
+		return 0;
 	}
 }

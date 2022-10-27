@@ -47,6 +47,7 @@ public class Main {
 		if (r.found())
 			System.out.println("Trying to find value closest to:" + r.getGivenResistorValue_Ohms() + " Ohms.   Found:"
 					+ r.getFoundResistorValue_Ohms() + " Ohms . Actual error:" + r.getActualError_P()
+					+ "% Series specific error margin +/-:"+r.getSeriesSpecificErrorMargin()
 					+ "%    Found in Series E" + r.getBelongsToESeries());
 		else
 			System.out.println("No matching standard value found");
@@ -75,6 +76,7 @@ public class Main {
 						+ " Voltage error:" + dr.getActualErrorInOutputVoltage_P() + "%");
 			}
 
+			// Get solution with smallest error in output voltage....
 			DividerResult dr = result.getSolutionWsmallestErrInOutputVoltage();
 			System.out.println();
 			System.out.println("Smallest error in output voltage R1=" + dr.getR1_V() + " Ohm     R2=" + dr.getR2_V()

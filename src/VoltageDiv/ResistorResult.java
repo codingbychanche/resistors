@@ -1,7 +1,5 @@
 package VoltageDiv;
 
-import java.math.RoundingMode;
-
 /**
  * Holds a result for a resistor value found inside in any of the series E3..E96
  * 
@@ -16,15 +14,17 @@ public class ResistorResult {
 	private double foundResistorValue_Ohms;
 	private double givenResistorValue_Ohms;
 	private int belongsToESeries;
-	private double actualError_P;
+	private double actualError_P; // Error between value searched and standard value found.
+	private int seriesSpecificErrorMargin;	// Error +/- in percent for the series the resistor belongs to.
 	private boolean found;
 
-	public ResistorResult(double foundResistorValue_Ohms, double givenResistorValue_Ohms, int belongsToESeries,
+	public ResistorResult(double foundResistorValue_Ohms, double givenResistorValue_Ohms, int belongsToESeries,int seriesSpecificErrorMargin,
 			boolean found) {
 		super();
 		this.foundResistorValue_Ohms = foundResistorValue_Ohms;
 		this.givenResistorValue_Ohms = givenResistorValue_Ohms;
 		this.belongsToESeries = belongsToESeries;
+		this.seriesSpecificErrorMargin=seriesSpecificErrorMargin;
 		this.found = found;
 	}
 
@@ -57,6 +57,10 @@ public class ResistorResult {
 
 	public void setBelongsToESeries(int belongsToESeries) {
 		this.belongsToESeries = belongsToESeries;
+	}
+	
+	public int getSeriesSpecificErrorMargin() {
+		return this.seriesSpecificErrorMargin;
 	}
 
 	public boolean found() {
