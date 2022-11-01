@@ -7,6 +7,11 @@ package VoltageDiv;
  * Since there is almost always more than one solution an instance of this class
  * will be added to an instance of the {@link DividerResults} class which stores
  * them in a {@link List} and facilitates various methods to evaluate them.
+ * <p>
+ * 
+ * <b>TODO: Sort method must be changed.... my and min output voltage should be 
+ * considered. We could determine the span between max and min error and sort the
+ * list be smallest span first to biggest span last...</b>
  * 
  * @author Berthold
  *         <p>
@@ -15,16 +20,24 @@ package VoltageDiv;
  *
  */
 public class DividerResult implements Comparable<DividerResult> {
-	private double vOut_V;
-	private double vOutCalc_V; // Resulting output voltage for the standard value f R2
+	private double vOutDesiered_V;			// Initial output voltage. 
+	private double vOutMax_V, vOutMin_V; 	// Min and max output voltage
 	private double r1_V, r2_V;
 	private int r1FoundInSeries, r2FoundInSeries;
 
 	/**
 	 * Creates a new result containing :
-	 *
-	 * @param vOutCalc_V      The resulting output voltage for the found standard
-	 *                        value of r2.
+	 * 
+	 * @param vOutDesiered
+	 * 
+	 * @param vOutMax_V       Maximal output voltage of this divider <u>considering
+	 *                        the smallest error margin</u> of each of the resistors
+	 *                        of this divider.
+	 * 
+	 * @param vOutMin_V       Minimal output voltage of this divider <u>considering
+	 *                        the largest error margin</u> of each of the resistors
+	 *                        of this divider.
+	 * 
 	 * @param r1_V            Standart value of r1.
 	 * @param r2_V            Standart value of r2.
 	 * @param r1FoundInSeries The E- series in which r1 was found.
@@ -33,31 +46,45 @@ public class DividerResult implements Comparable<DividerResult> {
 	 *                        resulting output voltage for the standard values found
 	 *                        for r1 and r2.
 	 */
-	public DividerResult(double vOut_V, double vOutCalc_V, double r1_V, double r2_V, int r1FoundInSeries,
+	public DividerResult(double vOutDesiered_V,double vOutMax_V, double vOutMin_V, double r1_V, double r2_V, int r1FoundInSeries,
 			int r2FoundInSeries) {
+
 		super();
-		this.vOut_V = vOut_V;
-		this.vOutCalc_V = vOutCalc_V;
+		this.vOutDesiered_V=vOutDesiered_V;
+		this.vOutMax_V = vOutMax_V;
+		this.vOutMin_V = vOutMin_V;
 		this.r1_V = r1_V;
 		this.r2_V = r2_V;
 		this.r1FoundInSeries = r1FoundInSeries;
 		this.r2FoundInSeries = r2FoundInSeries;
 	}
 
-	public double getvOut_V() {
-		return vOut_V;
+	/**
+	 * The initial value for the iutput voltage one anticipated.
+	 * 
+	 * @return Initial output voltage.
+	 */
+	public double getVOutDesiered() {
+		return this.vOutDesiered_V;
+	}
+	/**
+	 * <u>Maximum</u> output voltage of this divider considering the series specific
+	 * error margins for R2 and R1.
+	 * 
+	 * @return Maximum output voltage for this divider.
+	 */
+	public double getvOutMax_V() {
+		return vOutMax_V;
 	}
 
-	public void setvOut_V(double vOut_V) {
-		this.vOut_V = vOut_V;
-	}
-
-	public double getvOutCalc_V() {
-		return vOutCalc_V;
-	}
-
-	public void setvOutCalc_V(double vOutCalc_V) {
-		this.vOutCalc_V = vOutCalc_V;
+	/**
+	 * <u>Minimum</u> output voltage of this divider considering the series specific
+	 * error margins for R2 and R1.
+	 * 
+	 * @return Minimum output voltage for this divider.
+	 */
+	public double getvOutMin_V() {
+		return vOutMin_V;
 	}
 
 	public double getR1_V() {
@@ -96,11 +123,13 @@ public class DividerResult implements Comparable<DividerResult> {
 	 * Determines the error between initial Vout and found Vout.
 	 * 
 	 * @return A {@link Double} value containing the error in percent, rounded to
-	 *         three decimal places.
+	 *         three decimal places.<p>
+	 *         
+	 * <b>TODO: Change.... We should consider both errors: Between max and min output voltage... </b>
 	 */
 	public double getActualErrorInOutputVoltage_P() {
 		int decimalPlaces = 3;
-		return MathHelper.getError_P(vOutCalc_V, vOut_V, decimalPlaces);
+		return MathHelper.getError_P(vOutMax_V, vOutDesiered_V, decimalPlaces);
 	}
 
 	/**

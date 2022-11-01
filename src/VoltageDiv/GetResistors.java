@@ -33,19 +33,25 @@ public class GetResistors {
 	 *         <p>
 	 *         https://en.wikipedia.org/wiki/E_series_of_preferred_numbers
 	 */
-	public static List<Double> ofSeries(double e) {
-		double r = 1;
+	public static List<ResistorResult> ofSeries(int e) {
+		double resistorValue_Ohms = 1;
 		double rLast = 1;
 
 		int ddigits = MathHelper.getDdigitsForSeries(e);
 
-		List<Double> rSeries = new ArrayList<>();
+		ResistorResult result;
+		List<ResistorResult> rSeries = new ArrayList<>();
 		rLast = 1; // Every series begins with 1 Ohms!
 
 		for (int i = 1; i <= e; i++) {
-			r = rLast * getKValueForSeries(e);
-			rSeries.add(MathHelper.round(rLast, ddigits, RoundingMode.UP));
-			rLast = r;
+			resistorValue_Ohms = rLast * getKValueForSeries(e);
+			
+			result = new ResistorResult(MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP),
+					MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP), e, getSeriesSpecificErrorMargin(e), true);
+			
+			rSeries.add(result);
+			
+			rLast = resistorValue_Ohms;
 		}
 		return rSeries;
 	}
@@ -68,8 +74,10 @@ public class GetResistors {
 	 * 
 	 * @param rToTest               Value of resistor in Ohm to check.
 	 * @param allowedError_P        Allowed error margin in percent.
+	 * 
 	 * @param listOfSeriesToExclude The list consists of either no series or all
 	 *                              series not to be considered
+	 * 
 	 * @return The standard value for the resistor in Ohm found in series E3..E96
 	 *         for which the given resistor value matches and the series to which
 	 *         this resistor belongs to. The result is given inside an instance of
@@ -79,7 +87,7 @@ public class GetResistors {
 	public static ResistorResult getRValueClosestTo(double rToTest, double allowedError_P,
 			List<Integer> listOfSeriesToExclude) {
 
-		List<Double> rStandard = new ArrayList<>();
+		List<ResistorResult> rStandard = new ArrayList<>();
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
 		int pow = 1;
@@ -98,14 +106,16 @@ public class GetResistors {
 				rStandard = ofSeries(e);
 
 				// Loop through values in each series
-				for (double standardValueForR : rStandard) {
+				for (ResistorResult standardValueForR : rStandard) {
 
-					if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR * pow)) {
+					if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR.getFoundResistorValue_Ohms() * pow)) {
 
 						//
 						// We've found a matching resistor....
 						//
-						ResistorResult r = new ResistorResult(standardValueForR * pow, rToTest, e, getSeriesSpecificErrorMargin(e), true);
+						ResistorResult r = new ResistorResult(standardValueForR.getFoundResistorValue_Ohms() * pow, rToTest, e,
+								getSeriesSpecificErrorMargin(e), true);
+						
 						return r;
 					}
 				}
@@ -114,7 +124,7 @@ public class GetResistors {
 		//
 		// We've found nothing.....
 		//
-		ResistorResult r = new ResistorResult(0, rToTest, 0,0, false);
+		ResistorResult r = new ResistorResult(0, rToTest, 0, 0, false);
 		return r;
 	}
 
@@ -126,7 +136,7 @@ public class GetResistors {
 	 *         margin in percent for the series passed.
 	 */
 
-	static private int getSeriesSpecificErrorMargin(int e) {
+	static public int getSeriesSpecificErrorMargin(int e) {
 
 		switch (e) {
 		case 3:

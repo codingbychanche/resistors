@@ -25,46 +25,47 @@ public class Main {
 		//
 		// Show all standard values for a given series...
 		//
-		List<Double> rSeries = new ArrayList<>();
+		List<ResistorResult> rSeries = new ArrayList<>();
 		int eSeries = 6;
 		rSeries = GetResistors.ofSeries(eSeries);
 
 		System.out.println("Series " + eSeries);
-		for (double r : rSeries)
-			System.out.println(r + " Ohms");
+		for (ResistorResult r : rSeries)
+			System.out.println(r.getFoundResistorValue_Ohms() + " Ohms");
 
 		System.out.println();
 		//
 		// Check if a given value with an given error margin in percent
 		// can be found in any of the series E3..E96
 		//
-		List <Integer> listOfSeriesExcluded=new ArrayList();
-		//excludeSeries.add(3);
-		//excludeSeries.add(6);
-		
-		ResistorResult r = GetResistors.getRValueClosestTo(489, 5,listOfSeriesExcluded);
+		List<Integer> listOfSeriesExcluded = new ArrayList();
+		// excludeSeries.add(3);
+		// excludeSeries.add(6);
+
+		ResistorResult r = GetResistors.getRValueClosestTo(489, 1.5, listOfSeriesExcluded);
 
 		if (r.found())
 			System.out.println("Trying to find value closest to:" + r.getGivenResistorValue_Ohms() + " Ohms.   Found:"
 					+ r.getFoundResistorValue_Ohms() + " Ohms . Actual error:" + r.getActualError_P()
-					+ "% Series specific error margin +/-:"+r.getSeriesSpecificErrorMargin()
-					+ "%    Found in Series E" + r.getBelongsToESeries());
+					+ "% Series specific error margin +/-:" + r.getSeriesSpecificErrorMargin()
+					+ "%    Found in Series E" + r.getESeries());
 		else
 			System.out.println("No matching standard value found");
 
 		System.out.println("");
+		
 		//
 		// Voltage divider
 		//
 		// Try to find r1 and r2 for the given in- and output voltages.
-		double vIn_V = 2;
-		double vOut_V = 1;
-		double tolarableErrorForR2_P = 20;
+		
+		double vIn_V = 3.5;
+		double vOut_V = .85;
 
 		DividerResults result = new DividerResults(vIn_V, vOut_V);
-		result = Divider.findResistors(vIn_V, vOut_V,listOfSeriesExcluded);
+		result = Divider.findResistors(vIn_V, vOut_V, listOfSeriesExcluded);
 		System.out.println(
-				"Input voltage=" + result.getInputVoltage_V() + "V.    Output voltage=" + result.getOutputVoltage_V());
+				"Input voltage=" + result.getInputVoltage_V() + "V.    Output voltage anticipated=" + result.getOutputVoltage_V());
 
 		// Show results, if any.....
 		List<DividerResult> listOfResults = new ArrayList<>();
@@ -72,22 +73,9 @@ public class Main {
 			listOfResults = result.getListOfResults();
 			for (DividerResult dr : listOfResults) {
 				System.out.println("R1=" + dr.getR1_V() + " Ohm (E" + dr.getR1FoundInSeries() + ")  R2=" + dr.getR2_V()
-						+ " Ohm (E" + dr.getR2FoundInSeries() + ")" + " Resulting Output voltage:" + dr.getvOutCalc_V()
-						+ " Voltage error:" + dr.getActualErrorInOutputVoltage_P() + "%");
+						+ " Ohm (E" + dr.getR2FoundInSeries() + ")" + " Max output voltage:" + dr.getvOutMax_V()
+						+ "V Min output voltag:" + dr.getvOutMin_V() + "V");
 			}
-
-			// Get solution with smallest error in output voltage....
-			DividerResult dr = result.getSolutionWsmallestErrInOutputVoltage();
-			System.out.println();
-			System.out.println("Smallest error in output voltage R1=" + dr.getR1_V() + " Ohm     R2=" + dr.getR2_V()
-					+ " Ohm    Vout=" + dr.getvOutCalc_V()+ " Error="+dr.getActualErrorInOutputVoltage_P()+"%");
-			
-			System.out.println("Time it took:"+result.getTimeItTookIn_ms()+"ms");
-			
-		} else {
-			System.out
-					.println("For the allowed deviation of r2 between the calculated and the standard value (you chose:"
-							+ tolarableErrorForR2_P + "%) was no solution found.");
 		}
 	}
 }
