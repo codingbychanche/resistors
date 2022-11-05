@@ -28,7 +28,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	/**
 	 * Creates a new result containing :
 	 * 
-	 * @param vOutDesiered
+	 * @param vOutDesiered	
 	 * 
 	 * @param vOutMax_V       Maximal output voltage of this divider <u>considering
 	 *                        the smallest error margin</u> of each of the resistors
@@ -60,7 +60,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	}
 
 	/**
-	 * The initial value for the iutput voltage one anticipated.
+	 * The initial value for the input voltage one anticipated.
 	 * 
 	 * @return Initial output voltage.
 	 */
@@ -120,29 +120,27 @@ public class DividerResult implements Comparable<DividerResult> {
 	}
 
 	/**
-	 * Determines the error between initial Vout and found Vout.
+	 * Determines the error margin between lowest and highest output voltage
+	 * for the combination of resistors found for this voltage divider.
 	 * 
-	 * @return A {@link Double} value containing the error in percent, rounded to
+	 * @return A {@link Double} value containing the voltage spread, rounded to
 	 *         three decimal places.<p>
-	 *         
-	 * <b>TODO: Change.... We should consider both errors: Between max and min output voltage... </b>
 	 */
-	public double getActualErrorInOutputVoltage_P() {
-		int decimalPlaces = 3;
-		return MathHelper.getError_P(vOutMax_V, vOutDesiered_V, decimalPlaces);
+	public double getOutputVoltageErrorMargin() {
+		return vOutMax_V-vOutMin_V;
 	}
 
 	/**
 	 * Sort.
 	 * <p>
-	 * Sorts instances of this by the size of the error between the initial Vout and
-	 * Vout resulting from the found combinations of R1 and R2 in ascending order.
+	 * Sorts instances of this by the error margin between the highest and the lowest
+	 * output voltage of this divider.
 	 */
 	@Override
 	public int compareTo(DividerResult r) {
-		if (Math.abs(this.getActualErrorInOutputVoltage_P()) > Math.abs(r.getActualErrorInOutputVoltage_P()))
+		if (Math.abs(this.getOutputVoltageErrorMargin()) > Math.abs(r.getOutputVoltageErrorMargin()))
 			return 1;
-		if (Math.abs(this.getActualErrorInOutputVoltage_P()) < Math.abs(r.getActualErrorInOutputVoltage_P()))
+		if (Math.abs(this.getOutputVoltageErrorMargin()) < Math.abs(r.getOutputVoltageErrorMargin()))
 			return -1;
 		return 0;
 	}

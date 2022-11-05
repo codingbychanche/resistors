@@ -182,8 +182,8 @@ public class Divider {
 	 */
 	public static double getMinOutputVoltag_V(double vIn_V, ResistorResult r1, ResistorResult r2) {
 
-		double r1Max = r1.getFoundResistorValue_Ohms() * (1 - (r1.getSeriesSpecificErrorMargin() / 100));
-		double r2Max = r2.getFoundResistorValue_Ohms() * (1 - (r2.getSeriesSpecificErrorMargin() / 100));
+		double r1Max = r1.getFoundResistorValue_Ohms() * (1 + (r1.getSeriesSpecificErrorMargin() / 100));
+		double r2Max = r2.getFoundResistorValue_Ohms() * (1 + (r2.getSeriesSpecificErrorMargin() / 100));
 
 		return getOutputVOltage(vIn_V, r1Max, r2Max);
 	}

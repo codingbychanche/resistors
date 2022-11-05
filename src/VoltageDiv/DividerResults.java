@@ -17,7 +17,6 @@ import java.util.List;
 public class DividerResults {
 	private boolean hasResult;
 	private double inputVoltage_V, outputVoltage_V;
-	private double tolarableErrorForR2_P;
 	private List<DividerResult> listOfResults;
 	private Long timeItTookIn_ms;
 
@@ -107,6 +106,5 @@ public class DividerResults {
 	public void setTimeItTookIn_ms(Long timeItTookIn_s) {
 		this.timeItTookIn_ms = timeItTookIn_s;
 	}
-	
 	
 }
