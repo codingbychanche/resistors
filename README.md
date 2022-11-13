@@ -6,17 +6,7 @@ A collection of algorithms helping to calculate the properties of resistors. E.g
 ## Sample Output...
 <!DOCTYPE html>
 <head>
-<style>
-table,th,td{
-border: 1px solid black;
-border-collapse: collapse;
-padding-right: 5px;
-padding-left: 5px;
-padding-top: 5px;
-padding-bottom: 5px;
-text-align: center;
-}
-</style>
+
 
 </head>
 <body>
