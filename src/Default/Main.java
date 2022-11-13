@@ -9,6 +9,8 @@ import VoltageDiv.DividerResults;
 import VoltageDiv.GetResistors;
 import VoltageDiv.ResistorResult;
 
+import htmlBuilder.Table;
+
 /**
  * Demo for the {@link VoltageDiv}- class.
  * 
@@ -41,11 +43,11 @@ public class Main {
 		//
 		List<Integer> excludeSeries = new ArrayList();
 		//excludeSeries.add(96);
-		excludeSeries.add(48);
-		excludeSeries.add(24);
-		excludeSeries.add(12);
-		excludeSeries.add(6);
-		excludeSeries.add(3);	
+		//excludeSeries.add(48);
+		//excludeSeries.add(24);
+		//excludeSeries.add(12);
+		//excludeSeries.add(6);
+		//excludeSeries.add(3);	
 		
 		//
 		// Check if a given value with an given error margin in percent
@@ -54,12 +56,12 @@ public class Main {
 	
 		ResistorResult r = GetResistors.getRValueClosestTo(489, 1.5, excludeSeries);
 
-		if (r.found())
+		if (r.found()) {
 			System.out.println("Trying to find value closest to:" + r.getGivenResistorValue_Ohms() + " Ohms.   Found:"
 					+ r.getFoundResistorValue_Ohms() + " Ohms . Actual error:" + r.getActualError_P()
 					+ "% Series specific error margin +/-:" + r.getSeriesSpecificErrorMargin()
-					+ "%    Found in Series E" + r.getESeries());
-		else
+					+ "%    Found in Series E" + r.getESeries());	
+		}else
 			System.out.println("No matching standard value found");
 
 		System.out.println("");
@@ -69,9 +71,9 @@ public class Main {
 		//
 		// Try to find r1 and r2 for the given in- and output voltages.
 		//
-		double vIn_V = 2.5;
-		double vOut_V = 1.85;
-
+		double vIn_V = 5.5;
+		double vOut_V = 3.85;
+		
 		DividerResults result = new DividerResults(vIn_V, vOut_V);
 		result = Divider.findResistors(vIn_V, vOut_V, excludeSeries);
 		System.out.println(
@@ -81,13 +83,41 @@ public class Main {
 		// Show results, if any.....
 		//
 		List<DividerResult> listOfResults = new ArrayList<>();
+		
+		List <String> titleRow=new ArrayList();
+		titleRow.add("<b>Vin [V]</b>");
+		titleRow.add("<b>Vout [V]</b>");
+		titleRow.add("<b>R1 found [&Omega;]</b>");
+		titleRow.add("<b>R2 found [&Omega;]</b>");
+		titleRow.add("<b>Vout max [V]</b>");
+		titleRow.add("<b>Vout min [V]</b>");
+		titleRow.add("<b>Error margin [%]</b>");
+		Table t=new Table("Divider Results",titleRow);
+		
 		if (result.hasResult()) {
 			listOfResults = result.getListOfResults();
 			for (DividerResult dr : listOfResults) {
 				System.out.println("R1=" + dr.getR1_V() + " Ohm (E" + dr.getR1FoundInSeries() + ")  R2=" + dr.getR2_V()
 						+ " Ohm (E" + dr.getR2FoundInSeries() + ")" + " Max output voltage:" + dr.getvOutMax_V()
 						+ "V Min output voltag:" + dr.getvOutMin_V() + "V      error margin:"+dr.getOutputVoltageErrorMargin());
+				
+				//
+				// Produce a nice looking table in HTML....
+				//
+				List <String> oneResult=new ArrayList<>();
+				oneResult.add((String.valueOf(result.getInputVoltage_V())));
+				oneResult.add((String.valueOf(result.getOutputVoltage_V())));
+				oneResult.add((String.valueOf(dr.getR1_V())+" E"+dr.getR1FoundInSeries()));
+				oneResult.add((String.valueOf(dr.getR2_V())+" E"+dr.getR2FoundInSeries()));
+				oneResult.add((String.valueOf(dr.getvOutMax_V())));
+				oneResult.add((String.valueOf(dr.getvOutMin_V())));
+				oneResult.add((String.valueOf(dr.getOutputVoltageErrorMargin())));
+				t.addDataRow(oneResult);
 			}
 		}
+		
+		// Show result
+		String html=t.createHtmlTable("empty");
+		System.out.println(html);
 	}
 }
