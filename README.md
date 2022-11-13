@@ -1,6 +1,9 @@
 # Resistors
 A collection of algorithms helping to calculate the properties of resistors. E.g. find the closest value of a standard resistor within a given error margin for a resistance needed. The tool will tell you the standard value and the first standard series in which it was found.
 
+[Voltage Divider App. An app I wrote to demonstrate what this library can do.](https://play.google.com/store/apps/details?id=com.berthold.voltagedivider)
+
+## Sample Output...
 <!DOCTYPE html>
 <head>
 <style>
@@ -14,9 +17,6 @@ padding-bottom: 5px;
 text-align: center;
 }
 </style>
-=======
-[Voltage Divider App. An app I wrote to demonstrate what this library can do.](https://play.google.com/store/apps/details?id=com.berthold.voltagedivider)
-
 
 </head>
 <body>
