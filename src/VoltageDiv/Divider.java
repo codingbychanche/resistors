@@ -1,5 +1,6 @@
 package VoltageDiv;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.List;
  * A Voltage Divider.
  * 
  * @author Berthold
- *         <p>
  * 
  *         Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
  *         4.0)
@@ -19,7 +19,7 @@ public class Divider {
 	 * Finds a series of resistors which meet the condition for the given in- and
 	 * output voltage of a voltage divider.
 	 * <p>
-	 * The initial solution is found by assuming that R1=1 Ohm.
+	 * The initial solution is found by assuming that R1=1&Omega;.
 	 * <p>
 	 * By substituting R2 with the known ratio between Vin and Vout (=r) we find the
 	 * following formula for R2:<br>
@@ -31,13 +31,11 @@ public class Divider {
 	 * <p>
 	 * R1 is always a standard value for which the algorithm tries to find a
 	 * matching standard value for R2 in order to get the desired output voltage.
-	 * <p>
-	 * The maximum error margin for R2 is set to the maximum error across all
-	 * standard series within the algorithm tries to find the best solution for the
-	 * output voltage.
 	 * 
 	 * @param vIn_V                Inputvoltage in volts.
 	 * @param vOutDesiered_V       Output voltage in volts.
+	 * 
+	 * @param decimalPlaces        decimal places used for the results
 	 * 
 	 * @param listOfExcludedSeries For the result, none of these series are
 	 *                             considered.
@@ -45,8 +43,13 @@ public class Divider {
 	 * @return An instance of {@link DividerResults} containing either one or more
 	 *         instances of {@link DividerResult} or none if no result was found or
 	 *         the input voltage was equal or lower than the output voltage.
+	 * 
+	 *         <p>
+	 *         All values within the instance returned are rounded to the specified
+	 *         number of decimal places. Rounding is done by using Javas's
+	 *         {@link BigDecimal} {@link RoundingMode.CEELING}
 	 */
-	public static DividerResults findResistors(double vIn_V, double vOutDesiered_V,
+	public static DividerResults findResistors(double vIn_V, double vOutDesiered_V, int decimalPlaces,
 			List<Integer> listOfExcludedSeries) {
 
 		double ratio = vOutDesiered_V / vIn_V;
@@ -55,8 +58,8 @@ public class Divider {
 
 		ResistorResult foundStandardValueForR2_Ohm;
 
-		double vOutMin, vOutMax; // Min./ maximum output voltage considering the series specific error
-									// margin....
+		double vOutMin, vOutMax; // Min./ maximum output voltage considering the series specific error margin
+		double vOutNominal; // Theoretical output voltage considering no errors of the resistor values.
 
 		// Create a new instance holding the result. If output voltage is bigger than
 		// the input voltage, return the empty result.
@@ -70,9 +73,6 @@ public class Divider {
 
 		// The maximum error for r2 = biggest error in any of the standard series...
 		double maxTolErrForR2_P = 25;
-
-		// For all results...
-		int decimalPlaces = 3;
 
 		//
 		// Search a solutions for possible dividers, build a list of all dividers found.
@@ -97,13 +97,22 @@ public class Divider {
 
 					if (foundStandardValueForR2_Ohm.found()) {
 
-						vOutMax = getMaxOutputVoltag_V(vIn_V, r1, foundStandardValueForR2_Ohm);
-						vOutMin = getMinOutputVoltag_V(vIn_V, r1, foundStandardValueForR2_Ohm);
+						//
+						// Create a result for this divider.
+						//
+						vOutMax = MathHelper.round(getMaxOutputVoltag_V(vIn_V, r1, foundStandardValueForR2_Ohm),
+								decimalPlaces, RoundingMode.CEILING);
+						vOutMin = MathHelper.round(getMinOutputVoltag_V(vIn_V, r1, foundStandardValueForR2_Ohm),
+								decimalPlaces, RoundingMode.CEILING);
+						vOutNominal = MathHelper.round(
+								getNominalOutputVoltage(vIn_V,r1.getFoundResistorValue_Ohms(),
+										foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms()),
+								decimalPlaces, RoundingMode.CEILING);
 
-						DividerResult result = new DividerResult(vOutDesiered_V, vOutMax, vOutMin,
+						DividerResult result = new DividerResult(vOutDesiered_V,vOutNominal, vOutMax, vOutMin,
 								r1.getFoundResistorValue_Ohms(),
 								foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms(), lookUpR1InSeries,
-								foundStandardValueForR2_Ohm.getESeries());
+								foundStandardValueForR2_Ohm.getESeries(), decimalPlaces);
 
 						dividerResults.addResult(result);
 					}
@@ -141,6 +150,7 @@ public class Divider {
 	 * @param vIn_V Input voltage
 	 * @param r1    Resistor 1, an instance of {@link ResistorResult}
 	 * @param r2    Resistor 2, , an instance of {@link ResistorResult}
+	 * 
 	 * @return The resulting maximum output voltage for this divider, resulting from
 	 *         the minimal error margin for each of the resistors.
 	 */
@@ -149,7 +159,7 @@ public class Divider {
 		double r1Min = r1.getFoundResistorValue_Ohms() * 1 - (r1.getSeriesSpecificErrorMargin() / 100);
 		double r2Min = r2.getFoundResistorValue_Ohms() * 1 - (r2.getSeriesSpecificErrorMargin() / 100);
 
-		return getOutputVOltage(vIn_V, r1Min, r2Min);
+		return getNominalOutputVoltage(vIn_V, r1Min, r2Min);
 	}
 
 	/**
@@ -177,27 +187,28 @@ public class Divider {
 	 * @param vIn_V Input voltage
 	 * @param r1    Resistor 1, an instance of {@link ResistorResult}
 	 * @param r2    Resistor 2, , an instance of {@link ResistorResult}
+	 * 
 	 * @return The resulting maximum output voltage for this divider, resulting from
-	 *         the minimal error margin for each of the resistors.
+	 *         the maximal error margin for each of the resistors.
 	 */
 	public static double getMinOutputVoltag_V(double vIn_V, ResistorResult r1, ResistorResult r2) {
 
 		double r1Max = r1.getFoundResistorValue_Ohms() * (1 + (r1.getSeriesSpecificErrorMargin() / 100));
 		double r2Max = r2.getFoundResistorValue_Ohms() * (1 + (r2.getSeriesSpecificErrorMargin() / 100));
 
-		return getOutputVOltage(vIn_V, r1Max, r2Max);
+		return getNominalOutputVoltage(vIn_V, r1Max, r2Max);
 	}
 
 	/**
-	 * Calculates the output voltage of this divider
+	 * Calculates the nominal output voltage of this divider
 	 * 
 	 * @param vIn_V   Input voltage in Volts.
-	 * @param r1_Ohms Value for first resistor in Ohms.
-	 * @param r2_Ohms Value for second resistor in Ohms.
+	 * @param r1_Ohms Value for first resistor in &Omega;
+	 * @param r2_Ohms Value for second resistor in &Omega;
 	 * @return Output voltage in Volts.
 	 */
-	public static double getOutputVOltage(double vIn_V, double r1_Ohms, double r2_Ohms) {
-
+	public static double getNominalOutputVoltage(double vIn_V, double r1_Ohms, double r2_Ohms) {
+		
 		return (r1_Ohms / (r1_Ohms + r2_Ohms)) * vIn_V;
 	}
 

@@ -42,10 +42,10 @@ public class Main {
 		// Specify here, which standard series you wish to be excluded.... 
 		//
 		List<Integer> excludeSeries = new ArrayList();
-		//excludeSeries.add(96);
-		//excludeSeries.add(48);
-		//excludeSeries.add(24);
-		//excludeSeries.add(12);
+		excludeSeries.add(96);
+		excludeSeries.add(48);
+		excludeSeries.add(24);
+		excludeSeries.add(12);
 		//excludeSeries.add(6);
 		//excludeSeries.add(3);	
 		
@@ -72,10 +72,11 @@ public class Main {
 		// Try to find r1 and r2 for the given in- and output voltages.
 		//
 		double vIn_V = 5.5;
-		double vOut_V = 3.85;
+		double vOut_V = 3.4;
+		int decimalPlaces=3;
 		
 		DividerResults result = new DividerResults(vIn_V, vOut_V);
-		result = Divider.findResistors(vIn_V, vOut_V, excludeSeries);
+		result = Divider.findResistors(vIn_V, vOut_V, decimalPlaces,excludeSeries);
 		System.out.println(
 				"Input voltage=" + result.getInputVoltage_V() + "V.    Output voltage anticipated=" + result.getOutputVoltage_V());
 
@@ -89,17 +90,23 @@ public class Main {
 		titleRow.add("<b>Vout [V]</b>");
 		titleRow.add("<b>R1 found [&Omega;]</b>");
 		titleRow.add("<b>R2 found [&Omega;]</b>");
+		titleRow.add("<b>Vout nominal [V]</b>");
 		titleRow.add("<b>Vout max [V]</b>");
 		titleRow.add("<b>Vout min [V]</b>");
-		titleRow.add("<b>Error margin [%]</b>");
+		titleRow.add("<b>Error margin [V]</b>");
 		Table t=new Table("Divider Results",titleRow);
 		
+	
 		if (result.hasResult()) {
 			listOfResults = result.getListOfResults();
+	
+			// 
+			// Show result in plain text
+			//
 			for (DividerResult dr : listOfResults) {
 				System.out.println("R1=" + dr.getR1_V() + " Ohm (E" + dr.getR1FoundInSeries() + ")  R2=" + dr.getR2_V()
 						+ " Ohm (E" + dr.getR2FoundInSeries() + ")" + " Max output voltage:" + dr.getvOutMax_V()
-						+ "V Min output voltag:" + dr.getvOutMin_V() + "V      error margin:"+dr.getOutputVoltageErrorMargin());
+						+ "V Min output voltag:" + dr.getvOutMin_V());
 				
 				//
 				// Produce a nice looking table in HTML....
@@ -109,15 +116,18 @@ public class Main {
 				oneResult.add((String.valueOf(result.getOutputVoltage_V())));
 				oneResult.add((String.valueOf(dr.getR1_V())+" E"+dr.getR1FoundInSeries()));
 				oneResult.add((String.valueOf(dr.getR2_V())+" E"+dr.getR2FoundInSeries()));
-				oneResult.add((String.valueOf(dr.getvOutMax_V())));
-				oneResult.add((String.valueOf(dr.getvOutMin_V())));
-				oneResult.add((String.valueOf(dr.getOutputVoltageErrorMargin())));
+				oneResult.add(String.valueOf(dr.getVoutNominal()));
+				oneResult.add((String.valueOf(dr.getvOutMax_V())+"("+dr.getDevFromMaxVoltage()+")"));
+				oneResult.add((String.valueOf(dr.getvOutMin_V())+"("+dr.getDevFromMinVoltage()+")"));
+				oneResult.add((String.valueOf(dr.getErrorMargin())));
 				t.addDataRow(oneResult);
 			}
 		}
 		
-		// Show result
-		String html=t.createHtmlTable("empty");
+		//
+		// Show result inside a nice HTML- formated table...
+		//
+		String html=t.createHtmlTable("-");
 		System.out.println(html);
 	}
 }
