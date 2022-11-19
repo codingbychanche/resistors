@@ -1,16 +1,12 @@
+<h1>Sample output</h1>
+The improved algorithm now finds the best solution by evaluating how close either the heighest or the lowest output voltage to the initially given
+anticipated output voltage is and trys to find those solutions with the smallest possible spread between those two voltages. Highest and lowest 
+output voltages depend on the series specific error for each of the resistors of the divider.</p>
+
+<p>The results shown in the table below are sorted from best to poorest</p> 
+
 <!DOCTYPE html>
 <head>
-<style>
-table,th,td{
-border: 1px solid black;
-border-collapse: collapse;
-padding-right: 5px;
-padding-left: 5px;
-padding-top: 5px;
-padding-bottom: 5px;
-text-align: center;
-}
-</style>
 
 </head>
 <body>
