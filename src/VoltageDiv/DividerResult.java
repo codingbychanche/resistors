@@ -1,6 +1,8 @@
 package VoltageDiv;
 
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains a single result for a given voltage divider,
@@ -51,7 +53,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	 *                        for r1 and r2.
 	 * @param decimalPlaces   Decimal places used for all values in this instance.
 	 */
-	public DividerResult(double vOutDesiered_V, double vOutNominal, double vOutMax_V, double vOutMin_V, double r1_V,
+	public DividerResult(double vOutDesiered_V, double vOutNominal_V, double vOutMax_V, double vOutMin_V, double r1_V,
 			double r2_V, int r1FoundInSeries, int r2FoundInSeries, int decimalPlaces) {
 
 		super();
@@ -74,10 +76,10 @@ public class DividerResult implements Comparable<DividerResult> {
 	public double getVOutDesiered() {
 		return this.vOutDesiered_V;
 	}
-	
+
 	/**
-	 * The theoretical output voltage with no errors considered for resistor 1 and resistor 2
-	 * of this divider.
+	 * The theoretical output voltage with no errors considered for resistor 1 and
+	 * resistor 2 of this divider.
 	 * 
 	 * @return A {@link Double value for the nominal output voltage of this divider.
 	 */
@@ -182,6 +184,20 @@ public class DividerResult implements Comparable<DividerResult> {
 	}
 
 	/**
+	 * Determines the smallest deviation from either the minimum output voltage or
+	 * the maximum output voltage to the output voltage anticipated.
+	 * 
+	 * @return Smallest deviation from the output voltage anticipated.
+	 */
+	public double getMinDeltaFromNominal() {
+	
+		if (this.getDevFromMaxVoltage() < this.getDevFromMinVoltage())
+			return Math.abs(this.getDevFromMaxVoltage());
+		else
+			return Math.abs(this.getDevFromMinVoltage());
+	}
+
+	/**
 	 * Determines the deviation from the maximum output voltage from the output
 	 * voltage anticipated of this divider. The deviation depends on the series
 	 * specific error margin of the resistors chosen for this divider.
@@ -215,9 +231,8 @@ public class DividerResult implements Comparable<DividerResult> {
 	 *         {@link RoundingMode.CEILING}.
 	 */
 	public double getErrorMargin() {
-		return MathHelper.round(this.vOutMax_V - this.vOutMin_V, decimalPlaces, RoundingMode.CEILING);
+		return Math.abs(MathHelper.round(this.vOutMax_V - this.vOutMin_V, decimalPlaces, RoundingMode.CEILING));
 	}
-
 	/**
 	 * <p>
 	 * Evaluates the result for this given divider.

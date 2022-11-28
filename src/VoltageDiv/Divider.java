@@ -108,7 +108,7 @@ public class Divider {
 								getNominalOutputVoltage(vIn_V,r1.getFoundResistorValue_Ohms(),
 										foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms()),
 								decimalPlaces, RoundingMode.CEILING);
-
+						
 						DividerResult result = new DividerResult(vOutDesiered_V,vOutNominal, vOutMax, vOutMin,
 								r1.getFoundResistorValue_Ohms(),
 								foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms(), lookUpR1InSeries,
@@ -208,7 +208,6 @@ public class Divider {
 	 * @return Output voltage in Volts.
 	 */
 	public static double getNominalOutputVoltage(double vIn_V, double r1_Ohms, double r2_Ohms) {
-		
 		return (r1_Ohms / (r1_Ohms + r2_Ohms)) * vIn_V;
 	}
 

@@ -1,105 +1,24 @@
-<h1>Sample output</h1>
-The improved algorithm now finds the best solution by evaluating how close either the heighest or the lowest output voltage to the initially given
-anticipated output voltage is and trys to find those solutions with the smallest possible spread between those two voltages. Highest and lowest 
-output voltages depend on the series specific error for each of the resistors of the divider.</p>
+Sample solution:
+----------------
+Series 3
+Specific error margin: +/-25.0%
+2.2 Ohms
+4.7 Ohms
+10.1 Ohms
 
-<p>The results shown in the table below are sorted from best to poorest</p> 
+The following results will not contain resistors of any of these standard series:
+E96,E48,E24,E12,
 
-<!DOCTYPE html>
-<head>
+Checking which standard value can be found closest to789.0 Ohm
+No matching standard value found for:789.0 Ohm
 
-</head>
-<body>
-<table>
-<tr>
-<td><b>Vin [V]</b></td>
-<td><b>Vout [V]</b></td>
-<td><b>R1 found [&Omega;]</b></td>
-<td><b>R2 found [&Omega;]</b></td>
-<td><b>Vout nominal [V]</b></td>
-<td><b>Vout max [V]</b></td>
-<td><b>Vout min [V]</b></td>
-<td><b>Error margin [V]</b></td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>2.2 E3</td>
-<td>1.5 E6</td>
-<td>0.0</td>
-<td>3.301(-0.098)</td>
-<td>3.325(-0.074)</td>
-<td>-0.024</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>4.7 E3</td>
-<td>3.2 E6</td>
-<td>0.0</td>
-<td>3.286(-0.113)</td>
-<td>3.327(-0.072)</td>
-<td>-0.04</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>2.2 E6</td>
-<td>1.5 E6</td>
-<td>0.0</td>
-<td>3.334(-0.065)</td>
-<td>3.271(-0.129)</td>
-<td>0.064</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>10.1 E3</td>
-<td>6.9 E6</td>
-<td>0.0</td>
-<td>3.274(-0.125)</td>
-<td>3.322(-0.077)</td>
-<td>-0.048</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>4.7 E6</td>
-<td>3.2 E6</td>
-<td>0.0</td>
-<td>3.3(-0.1)</td>
-<td>3.273(-0.126)</td>
-<td>0.027</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>10.1 E6</td>
-<td>6.9 E6</td>
-<td>0.0</td>
-<td>3.281(-0.118)</td>
-<td>3.268(-0.132)</td>
-<td>0.014</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>3.2 E6</td>
-<td>2.2 E3</td>
-<td>0.0</td>
-<td>3.334(-0.065)</td>
-<td>3.205(-0.194)</td>
-<td>0.13</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>3.4</td>
-<td>6.9 E6</td>
-<td>4.7 E3</td>
-<td>0.0</td>
-<td>3.305(-0.094)</td>
-<td>3.218(-0.181)</td>
-<td>0.088</td>
-</tr>
-</table>
-</body>
+Voltage divider (First row shown is the best solution found, last row constitutes the poorest solution):
+Input voltage=5.5V.    Output voltage anticipated=3.4
+R1=2.2 Ohm (E3)  R2=1.5 Ohm (E6)    Vout nominal=3.271    Max output voltage:3.301V  <------0.024V ------> Min output voltag:3.325Min. deviation from output voltage anticipated:0.098
+R1=4.7 Ohm (E3)  R2=3.2 Ohm (E6)    Vout nominal=3.273    Max output voltage:3.286V  <------0.04V ------> Min output voltag:3.327Min. deviation from output voltage anticipated:0.113
+R1=2.2 Ohm (E6)  R2=1.5 Ohm (E6)    Vout nominal=3.271    Max output voltage:3.334V  <------0.064V ------> Min output voltag:3.271Min. deviation from output voltage anticipated:0.129
+R1=10.1 Ohm (E3)  R2=6.9 Ohm (E6)    Vout nominal=3.268    Max output voltage:3.274V  <------0.048V ------> Min output voltag:3.322Min. deviation from output voltage anticipated:0.125
+R1=4.7 Ohm (E6)  R2=3.2 Ohm (E6)    Vout nominal=3.273    Max output voltage:3.3V  <------0.027V ------> Min output voltag:3.273Min. deviation from output voltage anticipated:0.126
+R1=10.1 Ohm (E6)  R2=6.9 Ohm (E6)    Vout nominal=3.268    Max output voltage:3.281V  <------0.014V ------> Min output voltag:3.268Min. deviation from output voltage anticipated:0.132
+R1=3.2 Ohm (E6)  R2=2.2 Ohm (E3)    Vout nominal=3.26    Max output voltage:3.334V  <------0.13V ------> Min output voltag:3.205Min. deviation from output voltage anticipated:0.194
+R1=6.9 Ohm (E6)  R2=4.7 Ohm (E3)    Vout nominal=3.272    Max output voltage:3.305V  <------0.088V ------> Min output voltag:3.218Min. deviation from output voltage anticipated:0.181
