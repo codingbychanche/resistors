@@ -1,10 +1,10 @@
 Sample solution:
 ----------------
 <b>Series 3</b>
-Specific error margin: +/-25.0%
-2.2 Ohms
-4.7 Ohms
-10.1 Ohms
+Specific error margin: +/-25.0%<br>
+2.2 Ohms<br>
+4.7 Ohms<br>
+10.1 Ohms<br>
 
 <b>The following results will not contain resistors of any of these standard series:</b>
 E96,E48,E24,E12,
