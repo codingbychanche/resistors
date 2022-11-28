@@ -1,18 +1,19 @@
 Sample solution:
 ----------------
-<b>Series 3</b>
-Specific error margin: +/-25.0%<br>
+<b>Series 3</b><br>
+Specific error margin:<br>
++/-25.0%<br>
 2.2 Ohms<br>
 4.7 Ohms<br>
 10.1 Ohms<br>
 
-<b>The following results will not contain resistors of any of these standard series:</b>
+<b>The following results will not contain resistors of any of these standard series:</b><br>
 E96,E48,E24,E12,
 
-<b>Checking which standard value can be found closest to789.0 Ohm</b>
+<b>Checking which standard value can be found closest to 789.0 Ohm</b><br>
 No matching standard value found for:789.0 Ohm
 
-<b>Voltage divider</b> 
+<b>Voltage divider</b><br>
 (First row shown is the best solution found, last row constitutes the poorest solution)
 
 <i>Input voltage=5.5V.    Output voltage anticipated=3.4
