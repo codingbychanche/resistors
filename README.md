@@ -12,8 +12,10 @@ E96,E48,E24,E12,
 Checking which standard value can be found closest to789.0 Ohm
 No matching standard value found for:789.0 Ohm
 
-Voltage divider (First row shown is the best solution found, last row constitutes the poorest solution):
+Voltage divider 
+(First row shown is the best solution found, last row constitutes the poorest solution)
 Input voltage=5.5V.    Output voltage anticipated=3.4
+
 R1=2.2 Ohm (E3)  R2=1.5 Ohm (E6)    Vout nominal=3.271    Max output voltage:3.301V  <------0.024V ------> Min output voltag:3.325Min. 
 Max. deviation from output voltage anticipated:0.098
 
