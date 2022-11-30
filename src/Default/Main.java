@@ -103,10 +103,11 @@ public class Main {
 		titleRow.add("<b>R1 found [&Omega;]</b>");
 		titleRow.add("<b>R2 found [&Omega;]</b>");
 
+		titleRow.add("<b>Vout anticipated</b>");
 		titleRow.add("<b>Vout nominal</b>");
 
 		titleRow.add("<b>Vout max [V]</b>");
-		titleRow.add("<b>Error margin [V]</b>");
+		titleRow.add("<b>Error margin [V]<br><sub>Max <--> Min</sub></b>");
 		titleRow.add("<b>Vout min [V]</b>");
 
 		Table t = new Table("Divider Results", titleRow);
@@ -134,10 +135,12 @@ public class Main {
 
 				oneResult.add((String.valueOf(dr.getR1_V()) + " E" + dr.getR1FoundInSeries()));
 				oneResult.add((String.valueOf(dr.getR2_V()) + " E" + dr.getR2FoundInSeries()));
+				oneResult.add(String.valueOf(dr.getVOutDesiered()));
 				oneResult.add(String.valueOf(dr.getVoutNominal()));
 				oneResult.add((String.valueOf(dr.getvOutMax_V()) + "(" + dr.getDevFromMaxVoltage() + ")"));
-				oneResult.add((String.valueOf(dr.getvOutMin_V()) + "(" + dr.getDevFromMinVoltage() + ")"));
 				oneResult.add((String.valueOf(dr.getErrorMargin())));
+				oneResult.add((String.valueOf(dr.getvOutMin_V()) + "(" + dr.getDevFromMinVoltage() + ")"));
+			
 				t.addDataRow(oneResult);
 			}
 		}
