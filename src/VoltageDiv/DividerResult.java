@@ -24,7 +24,7 @@ import java.util.List;
  *
  */
 public class DividerResult implements Comparable<DividerResult> {
-	private double vOutDesiered_V; // Initial output voltage.
+	private double vOutAnticipated_V; // Initial output voltage.
 	private double vOutNominal_V; // Theoretical output voltage, no errors in resistor value considered.
 	private double vOutMax_V, vOutMin_V; // Min and max output voltage
 	private double r1_V, r2_V;
@@ -57,7 +57,7 @@ public class DividerResult implements Comparable<DividerResult> {
 			double r2_V, int r1FoundInSeries, int r2FoundInSeries, int decimalPlaces) {
 
 		super();
-		this.vOutDesiered_V = vOutDesiered_V;
+		this.vOutAnticipated_V = vOutDesiered_V;
 		this.vOutNominal_V = vOutNominal_V;
 		this.vOutMax_V = vOutMax_V;
 		this.vOutMin_V = vOutMin_V;
@@ -73,8 +73,8 @@ public class DividerResult implements Comparable<DividerResult> {
 	 * 
 	 * @return Output voltage anticipated.
 	 */
-	public double getVOutDesiered() {
-		return this.vOutDesiered_V;
+	public double getVOutAnticipated() {
+		return this.vOutAnticipated_V;
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	 *         output voltage anticipated.
 	 */
 	public double getDevFromMaxVoltage() {
-		return MathHelper.round(this.vOutMax_V - this.vOutDesiered_V, decimalPlaces, RoundingMode.CEILING);
+		return MathHelper.round(this.vOutMax_V - this.vOutAnticipated_V, decimalPlaces, RoundingMode.CEILING);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	 *         output voltage anticipated.
 	 */
 	public double getDevFromMinVoltage() {
-		return MathHelper.round(this.vOutMin_V - this.vOutDesiered_V, decimalPlaces, RoundingMode.CEILING);
+		return MathHelper.round(this.vOutMin_V - this.vOutAnticipated_V, decimalPlaces, RoundingMode.CEILING);
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	 *         this divider.
 	 */
 	public double getEval() {
-		return Math.abs(this.vOutDesiered_V - this.vOutMax_V) + (this.vOutDesiered_V - this.vOutMin_V);
+		return Math.abs(this.vOutAnticipated_V - this.vOutMax_V) + (this.vOutAnticipated_V - this.vOutMin_V);
 	}
 
 	/**

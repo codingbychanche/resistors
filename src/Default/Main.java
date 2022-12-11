@@ -135,7 +135,7 @@ public class Main {
 
 				oneResult.add((String.valueOf(dr.getR1_V()) + " E" + dr.getR1FoundInSeries()));
 				oneResult.add((String.valueOf(dr.getR2_V()) + " E" + dr.getR2FoundInSeries()));
-				oneResult.add(String.valueOf(dr.getVOutDesiered()));
+				oneResult.add(String.valueOf(dr.getVOutAnticipated()));
 				oneResult.add(String.valueOf(dr.getVoutNominal()));
 				oneResult.add((String.valueOf(dr.getvOutMax_V()) + "(" + dr.getDevFromMaxVoltage() + ")"));
 				oneResult.add((String.valueOf(dr.getErrorMargin())));
