@@ -84,7 +84,7 @@ public class Main {
 		// Try to find r1 and r2 for the given in- and output voltages.
 		//
 		double vIn_V = 5.5;
-		double vOut_V = 3.4;
+		double vOut_V = 3.4; 
 		int decimalPlaces = 3;
 
 		DividerResults result = new DividerResults(vIn_V, vOut_V);
@@ -147,5 +147,16 @@ public class Main {
 		System.out.println("");
 		String html = t.createHtmlTable("-");
 		System.out.println(html);
+		
+		//
+		// Shows a list of all standard series which were not included when searching
+		// for solutions for this divider...
+		//
+		List <Integer> excludedSeries=result.getListOfResults().get(0).getSeriesExcluded();  // Any results contains a list of excluded series....
+		System.out.println("Series excluded:");
+		for (int e:excludedSeries) {
+			if (e!=0)
+				System.out.print("E"+e+" ");
+		}
 	}
 }

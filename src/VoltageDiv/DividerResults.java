@@ -16,7 +16,6 @@ import java.util.List;
  */
 public class DividerResults {
 	private boolean hasResult;
-	private List <Integer> seriesExcluded;
 	private double inputVoltage_V, outputVoltage_V;
 	private List<DividerResult> listOfResults;
 	private Long timeItTookIn_ms;
@@ -31,7 +30,6 @@ public class DividerResults {
 	public DividerResults(double inputVoltage_V, double outputVoltage_V) {
 		listOfResults = new ArrayList<>();
 		hasResult = false;
-		this.seriesExcluded=seriesExcluded;
 		this.inputVoltage_V = inputVoltage_V;
 		this.outputVoltage_V = outputVoltage_V;
 	}
@@ -107,5 +105,5 @@ public class DividerResults {
 
 	public void setTimeItTookIn_ms(Long timeItTookIn_s) {
 		this.timeItTookIn_ms = timeItTookIn_s;
-	}	
+	}
 }

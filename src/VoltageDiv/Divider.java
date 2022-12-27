@@ -112,7 +112,7 @@ public class Divider {
 						DividerResult result = new DividerResult(vOutDesiered_V,vOutNominal, vOutMax, vOutMin,
 								r1.getFoundResistorValue_Ohms(),
 								foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms(), lookUpR1InSeries,
-								foundStandardValueForR2_Ohm.getESeries(), decimalPlaces);
+								foundStandardValueForR2_Ohm.getESeries(), decimalPlaces,listOfExcludedSeries);
 
 						dividerResults.addResult(result);
 					}

@@ -30,6 +30,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	private double r1_V, r2_V;
 	private int r1FoundInSeries, r2FoundInSeries;
 	private int decimalPlaces;
+	private List <Integer> seriesExcluded; // A list of standard series included when searching solutions for this divider
 
 	/**
 	 * Creates a new result containing :
@@ -54,7 +55,7 @@ public class DividerResult implements Comparable<DividerResult> {
 	 * @param decimalPlaces   Decimal places used for all values in this instance.
 	 */
 	public DividerResult(double vOutDesiered_V, double vOutNominal_V, double vOutMax_V, double vOutMin_V, double r1_V,
-			double r2_V, int r1FoundInSeries, int r2FoundInSeries, int decimalPlaces) {
+			double r2_V, int r1FoundInSeries, int r2FoundInSeries, int decimalPlaces,List<Integer> seriesExcluded) {
 
 		super();
 		this.vOutAnticipated_V = vOutDesiered_V;
@@ -66,6 +67,7 @@ public class DividerResult implements Comparable<DividerResult> {
 		this.r1FoundInSeries = r1FoundInSeries;
 		this.r2FoundInSeries = r2FoundInSeries;
 		this.decimalPlaces = decimalPlaces;
+		this.seriesExcluded=seriesExcluded;
 	}
 
 	/**
@@ -287,6 +289,16 @@ public class DividerResult implements Comparable<DividerResult> {
 	 */
 	public double getEval() {
 		return Math.abs(this.vOutAnticipated_V - this.vOutMax_V) + (this.vOutAnticipated_V - this.vOutMin_V);
+	}
+	
+	/**
+	 * A list of standard series that were included when searching for the
+	 * solutions of this divider....
+	 * 
+	 * @return {@link List} of standard series included for this solution.
+	 */
+	public List<Integer> getSeriesExcluded(){
+		return this.seriesExcluded;
 	}
 
 	/**
