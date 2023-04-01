@@ -10,8 +10,9 @@ Specific error margin:<br>
 <b>The following results will not contain resistors of any of these standard series:</b><br>
 E96,E48,E24,E12,
 
-<b>Checking which standard value can be found closest to 789.0 Ohm</b><br>
-No matching standard value found for:789.0 Ohm
+<b>Checking which standard value can be found closest to 1.6 Ohm</b>
+Found:1.6 Ohm   Found:1.6 Ohms . Actual error:0.0% Series specific error margin +/-:5.0%    Found in Series E24<br>
+Found:1.6 Ohm   Found:1.61 Ohms . Actual error:0.63% Series specific error margin +/-:1.0%    Found in Series E96<br><br>
 
 <b>Voltage divider</b><br>
 (First row shown is the best solution found, last row constitutes the poorest solution)

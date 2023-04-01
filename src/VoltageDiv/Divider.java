@@ -56,7 +56,7 @@ public class Divider {
 		double r2Calc_Ohms = (1 - ratio) / ratio;
 		double rCalc;
 
-		ResistorResult foundStandardValueForR2_Ohm;
+		List <ResistorResult> foundStandartValuesForR2;
 
 		double vOutMin, vOutMax; // Min./ maximum output voltage considering the series specific error margin
 		double vOutNominal; // Theoretical output voltage considering no errors of the resistor values.
@@ -92,27 +92,31 @@ public class Divider {
 					rCalc = r2Calc_Ohms * r1.getFoundResistorValue_Ohms();
 
 					// Check if r is available in any of the standard series
-					foundStandardValueForR2_Ohm = GetResistors.getRValueClosestTo(rCalc, maxTolErrForR2_P,
+					foundStandartValuesForR2 = GetResistors.getRValueClosestTo(rCalc, maxTolErrForR2_P,
 							listOfExcludedSeries);
 
-					if (foundStandardValueForR2_Ohm.found()) {
-
+					// We have found something...
+					if (!foundStandartValuesForR2.isEmpty()) {
+						
+						// For the time being only the first value found for R2 is used....
+						ResistorResult firstStadardValueForR2=foundStandartValuesForR2.get(0);
+						
 						//
 						// Create a result for this divider.
 						//
-						vOutMax = MathHelper.round(getMaxOutputVoltag_V(vIn_V, r1, foundStandardValueForR2_Ohm),
+						vOutMax = MathHelper.round(getMaxOutputVoltag_V(vIn_V, r1, firstStadardValueForR2),
 								decimalPlaces, RoundingMode.CEILING);
-						vOutMin = MathHelper.round(getMinOutputVoltag_V(vIn_V, r1, foundStandardValueForR2_Ohm),
+						vOutMin = MathHelper.round(getMinOutputVoltag_V(vIn_V, r1, firstStadardValueForR2),
 								decimalPlaces, RoundingMode.CEILING);
 						vOutNominal = MathHelper.round(
 								getNominalOutputVoltage(vIn_V,r1.getFoundResistorValue_Ohms(),
-										foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms()),
+										firstStadardValueForR2.getFoundResistorValue_Ohms()),
 								decimalPlaces, RoundingMode.CEILING);
 						
 						DividerResult result = new DividerResult(vOutDesiered_V,vOutNominal, vOutMax, vOutMin,
 								r1.getFoundResistorValue_Ohms(),
-								foundStandardValueForR2_Ohm.getFoundResistorValue_Ohms(), lookUpR1InSeries,
-								foundStandardValueForR2_Ohm.getESeries(), decimalPlaces,listOfExcludedSeries);
+								firstStadardValueForR2.getFoundResistorValue_Ohms(), lookUpR1InSeries,
+								firstStadardValueForR2.getESeries(), decimalPlaces,listOfExcludedSeries);
 
 						dividerResults.addResult(result);
 					}

@@ -34,22 +34,32 @@ public class GetResistors {
 	 *         https://en.wikipedia.org/wiki/E_series_of_preferred_numbers
 	 */
 	public static List<ResistorResult> ofSeries(int e) {
-		double resistorValue_Ohms = 1;
-		double rLast = 1;
-
+	
 		int ddigits = MathHelper.getDdigitsForSeries(e);
 
 		ResistorResult result;
 		List<ResistorResult> rSeries = new ArrayList<>();
-		rLast = 1; // Every series begins with 1 Ohms!
+	
 
+		//
+		// For each series, the first value is always 1 Ohm...
+		//
+		double resistorValue_Ohms = 1;
+		double rLast = 1;
+
+		result = new ResistorResult(1,
+				MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP), e, getSeriesSpecificErrorMargin(e),
+				true);
+		
+		// Get all resistors for the given series...
 		for (int i = 1; i <= e; i++) {
-			resistorValue_Ohms = rLast * getKValueForSeries(e);
-			
-			result = new ResistorResult(MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP),
-					MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP), e, getSeriesSpecificErrorMargin(e), true);
-			
 			rSeries.add(result);
+			
+			resistorValue_Ohms = rLast * getKValueForSeries(e);
+
+			result = new ResistorResult(MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP),
+					MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP), e, getSeriesSpecificErrorMargin(e),
+					true);
 			
 			rLast = resistorValue_Ohms;
 		}
@@ -64,6 +74,9 @@ public class GetResistors {
 	 * 
 	 */
 	public static double getKValueForSeries(double e) {
+		if (e==1)
+			return 1;
+		
 		double kVal = Math.pow(10, 1 / e);
 		return MathHelper.round(kVal, 2, RoundingMode.UP);
 	}
@@ -84,13 +97,21 @@ public class GetResistors {
 	 *         {@link ResistorResult}. The first series in which the resistor value
 	 *         could be found will be returned.
 	 */
-	public static ResistorResult getRValueClosestTo(double rToTest, double allowedError_P,
+	public static List<ResistorResult> getRValueClosestTo(double rToTest, double allowedError_P,
 			List<Integer> listOfSeriesToExclude) {
 
+		// All resistors matching...
+		List<ResistorResult> listOfResults = new ArrayList<>();
+
+		//
+		// Start search.
+		//
 		List<ResistorResult> rStandard = new ArrayList<>();
+
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
 		int pow = 1;
+		
 		if (rToTest >= 10)
 			pow = 10;
 		if (rToTest >= 100)
@@ -108,24 +129,21 @@ public class GetResistors {
 				// Loop through values in each series
 				for (ResistorResult standardValueForR : rStandard) {
 
-					if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest, standardValueForR.getFoundResistorValue_Ohms() * pow)) {
+					if (MathHelper.isInRangeWithinPercentage(allowedError_P, rToTest,
+							standardValueForR.getFoundResistorValue_Ohms() * pow)) {
 
 						//
 						// We've found a matching resistor....
 						//
-						ResistorResult r = new ResistorResult(standardValueForR.getFoundResistorValue_Ohms() * pow, rToTest, e,
-								getSeriesSpecificErrorMargin(e), true);
-						
-						return r;
+						ResistorResult r = new ResistorResult(standardValueForR.getFoundResistorValue_Ohms() * pow,
+								rToTest, e, getSeriesSpecificErrorMargin(e), true);
+						listOfResults.add(r);
 					}
 				}
 			}
 		}
-		//
-		// We've found nothing.....
-		//
-		ResistorResult r = new ResistorResult(0, rToTest, 0, 0, false);
-		return r;
+	
+		return listOfResults;
 	}
 
 	/**
@@ -156,7 +174,6 @@ public class GetResistors {
 
 		case 96:
 			return 1;
-
 		}
 		return 0;
 	}

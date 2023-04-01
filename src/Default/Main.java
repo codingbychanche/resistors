@@ -6,6 +6,7 @@ import java.util.List;
 import VoltageDiv.Divider;
 import VoltageDiv.DividerResult;
 import VoltageDiv.DividerResults;
+import VoltageDiv.DrawResult;
 import VoltageDiv.GetResistors;
 import VoltageDiv.ResistorResult;
 
@@ -28,7 +29,7 @@ public class Main {
 		// Show all standard values for a given series...
 		//
 		List<ResistorResult> rSeries = new ArrayList<>();
-		int eSeries = 3;
+		int eSeries = 6;
 		rSeries = GetResistors.ofSeries(eSeries);
 
 		System.out.println("Series " + eSeries);
@@ -42,10 +43,10 @@ public class Main {
 		// Specify here, which standard series you wish to be excluded....
 		//
 		List<Integer> excludeSeries = new ArrayList();
-		excludeSeries.add(96);
-		excludeSeries.add(48);
-		excludeSeries.add(24);
-		excludeSeries.add(12);
+		// excludeSeries.add(96);
+		// excludeSeries.add(48);
+		// excludeSeries.add(24);
+		// excludeSeries.add(12);
 		// excludeSeries.add(6);
 		// excludeSeries.add(3);
 
@@ -63,18 +64,23 @@ public class Main {
 		// Check if a given value with an given error margin in percent
 		// can be found in any of the series E3..E96
 		//
-		double resistorNeeded = 789;
-		double errorMarginAllowedIn_P = 1.5;
-		ResistorResult r = GetResistors.getRValueClosestTo(resistorNeeded, errorMarginAllowedIn_P, excludeSeries);
+		double resistorNeeded = 1.8;
+		double errorMarginAllowedIn_P = 0;
 
-		System.out.println("Checking which standard value can be found closest to" + resistorNeeded+" Ohm");
-		if (r.found()) {
-			System.out.println("Trying to find value closest to:" + r.getGivenResistorValue_Ohms() + " Ohm   Found:"
-					+ r.getFoundResistorValue_Ohms() + " Ohms . Actual error:" + r.getActualError_P()
-					+ "% Series specific error margin +/-:" + r.getSeriesSpecificErrorMargin()
-					+ "%    Found in Series E" + r.getESeries());
+		System.out.println("Checking which standard value can be found closest to " + resistorNeeded + " Ohm");
+
+		List<ResistorResult> resultList = new ArrayList<>();
+		resultList = GetResistors.getRValueClosestTo(resistorNeeded, errorMarginAllowedIn_P, excludeSeries);
+
+		if (!resultList.isEmpty()) {
+
+			for (ResistorResult r : resultList) {
+				System.out.println("Found:" + r.getFoundResistorValue_Ohms() + " Ohms . Actual error:"
+						+ r.getActualError_P() + "% Series specific error margin +/-:"
+						+ r.getSeriesSpecificErrorMargin() + "%    Found in Series E" + r.getESeries());
+			}
 		} else
-			System.out.println("No matching standard value found for:" + resistorNeeded+" Ohm");
+			System.out.println("No matching standard value found for:" + resistorNeeded + " Ohm");
 
 		System.out.println("");
 
@@ -84,14 +90,17 @@ public class Main {
 		// Try to find r1 and r2 for the given in- and output voltages.
 		//
 		double vIn_V = 5.5;
-		double vOut_V = 3.4; 
+		double vOut_V = 3.4;
 		int decimalPlaces = 3;
 
 		DividerResults result = new DividerResults(vIn_V, vOut_V);
 		result = Divider.findResistors(vIn_V, vOut_V, decimalPlaces, excludeSeries);
-		System.out.println("Voltage divider (First row shown is the best solution found, last row constitutes the poorest solution):");
+		System.out.println(
+				"Voltage divider (First row shown is the best solution found, last row constitutes the poorest solution):");
 		System.out.println("Input voltage=" + result.getInputVoltage_V() + "V.    Output voltage anticipated="
 				+ result.getOutputVoltage_V());
+
+		DrawResult.draw(result.getListOfResults().get(0));
 
 		//
 		// Show results, if any.....
@@ -125,9 +134,10 @@ public class Main {
 				//
 				System.out.println("R1=" + dr.getR1_V() + " Ohm (E" + dr.getR1FoundInSeries() + ")  R2=" + dr.getR2_V()
 						+ " Ohm (E" + dr.getR2FoundInSeries() + ")    Vout nominal=" + dr.getVoutNominal()
-						+ "    Max output voltage:" + dr.getvOutMax_V() +"V  <------"+dr.getErrorMargin() +"V ------> Min output voltag:" + dr.getvOutMin_V()
-						+ "Min. deviation from output voltage anticipated:"+dr.getMinDeltaFromNominal());
-				
+						+ "    Max output voltage:" + dr.getvOutMax_V() + "V  <------" + dr.getErrorMargin()
+						+ "V ------> Min output voltag:" + dr.getvOutMin_V()
+						+ "Min. deviation from output voltage anticipated:" + dr.getMinDeltaFromNominal());
+
 				//
 				// Create a nicer looking table in HTML....
 				//
@@ -140,23 +150,25 @@ public class Main {
 				oneResult.add((String.valueOf(dr.getvOutMax_V()) + "(" + dr.getDevFromMaxVoltage() + ")"));
 				oneResult.add((String.valueOf(dr.getErrorMargin())));
 				oneResult.add((String.valueOf(dr.getvOutMin_V()) + "(" + dr.getDevFromMinVoltage() + ")"));
-			
+
 				t.addDataRow(oneResult);
 			}
 		}
 		System.out.println("");
 		String html = t.createHtmlTable("-");
 		System.out.println(html);
-		
+
 		//
 		// Shows a list of all standard series which were not included when searching
 		// for solutions for this divider...
 		//
-		List <Integer> excludedSeries=result.getListOfResults().get(0).getSeriesExcluded();  // Any results contains a list of excluded series....
+		List<Integer> excludedSeries = result.getListOfResults().get(0).getSeriesExcluded(); // Any results contains a
+																								// list of excluded
+																								// series....
 		System.out.println("Series excluded:");
-		for (int e:excludedSeries) {
-			if (e!=0)
-				System.out.print("E"+e+" ");
+		for (int e : excludedSeries) {
+			if (e != 0)
+				System.out.print("E" + e + " ");
 		}
 	}
 }
