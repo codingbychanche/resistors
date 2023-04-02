@@ -34,12 +34,11 @@ public class GetResistors {
 	 *         https://en.wikipedia.org/wiki/E_series_of_preferred_numbers
 	 */
 	public static List<ResistorResult> ofSeries(int e) {
-	
+
 		int ddigits = MathHelper.getDdigitsForSeries(e);
 
 		ResistorResult result;
 		List<ResistorResult> rSeries = new ArrayList<>();
-	
 
 		//
 		// For each series, the first value is always 1 Ohm...
@@ -47,20 +46,19 @@ public class GetResistors {
 		double resistorValue_Ohms = 1;
 		double rLast = 1;
 
-		result = new ResistorResult(1,
-				MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP), e, getSeriesSpecificErrorMargin(e),
-				true);
-		
+		result = new ResistorResult(1, MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP), e,
+				getSeriesSpecificErrorMargin(e), true);
+
 		// Get all resistors for the given series...
 		for (int i = 1; i <= e; i++) {
 			rSeries.add(result);
-			
+
 			resistorValue_Ohms = rLast * getKValueForSeries(e);
 
 			result = new ResistorResult(MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP),
 					MathHelper.round(resistorValue_Ohms, ddigits, RoundingMode.UP), e, getSeriesSpecificErrorMargin(e),
 					true);
-			
+
 			rLast = resistorValue_Ohms;
 		}
 		return rSeries;
@@ -74,9 +72,9 @@ public class GetResistors {
 	 * 
 	 */
 	public static double getKValueForSeries(double e) {
-		if (e==1)
+		if (e == 1)
 			return 1;
-		
+
 		double kVal = Math.pow(10, 1 / e);
 		return MathHelper.round(kVal, 2, RoundingMode.UP);
 	}
@@ -91,17 +89,13 @@ public class GetResistors {
 	 * @param listOfSeriesToExclude The list consists of either no series or all
 	 *                              series not to be considered
 	 * 
-	 * @return The standard value for the resistor in Ohm found in series E3..E96
+	 * @return The standard values for the resistors in Ohm found in series E3..E96
 	 *         for which the given resistor value matches and the series to which
-	 *         this resistor belongs to. The result is given inside an instance of
-	 *         {@link ResistorResult}. The first series in which the resistor value
-	 *         could be found will be returned.
+	 *         this resistors belong to. The result is given as an instance of
+	 *         {@link ResistorResults}.
 	 */
-	public static List<ResistorResult> getRValueClosestTo(double rToTest, double allowedError_P,
+	public static ResistorResults getRValueClosestTo(double rToTest, double allowedError_P,
 			List<Integer> listOfSeriesToExclude) {
-
-		// All resistors matching...
-		List<ResistorResult> listOfResults = new ArrayList<>();
 
 		//
 		// Start search.
@@ -111,7 +105,7 @@ public class GetResistors {
 		int eSeries[] = { 3, 6, 12, 24, 48, 96 };
 
 		int pow = 1;
-		
+
 		if (rToTest >= 10)
 			pow = 10;
 		if (rToTest >= 100)
@@ -120,6 +114,9 @@ public class GetResistors {
 			pow = 1000;
 		if (rToTest >= 10000000)
 			pow = 1000000;
+
+		// List of results found...
+		ResistorResults listOfResults = new ResistorResults();
 
 		// Loop through series
 		for (int e : eSeries) {
@@ -135,14 +132,15 @@ public class GetResistors {
 						//
 						// We've found a matching resistor....
 						//
+
 						ResistorResult r = new ResistorResult(standardValueForR.getFoundResistorValue_Ohms() * pow,
 								rToTest, e, getSeriesSpecificErrorMargin(e), true);
-						listOfResults.add(r);
+						listOfResults.addResult(r);
 					}
 				}
 			}
 		}
-	
+
 		return listOfResults;
 	}
 

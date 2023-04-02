@@ -13,10 +13,6 @@ import java.util.List;
  * them in a {@link List} and facilitates various methods to evaluate them.
  * <p>
  * 
- * <b>TODO: Sort method must be changed.... my and min output voltage should be
- * considered. We could determine the span between max and min error and sort
- * the list be smallest span first to biggest span last...</b>
- * 
  * @author Berthold
  *         <p>
  *         Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA

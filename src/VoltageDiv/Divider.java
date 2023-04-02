@@ -56,7 +56,7 @@ public class Divider {
 		double r2Calc_Ohms = (1 - ratio) / ratio;
 		double rCalc;
 
-		List <ResistorResult> foundStandartValuesForR2;
+		ResistorResults foundStandartValuesForR2;
 
 		double vOutMin, vOutMax; // Min./ maximum output voltage considering the series specific error margin
 		double vOutNominal; // Theoretical output voltage considering no errors of the resistor values.
@@ -94,12 +94,13 @@ public class Divider {
 					// Check if r is available in any of the standard series
 					foundStandartValuesForR2 = GetResistors.getRValueClosestTo(rCalc, maxTolErrForR2_P,
 							listOfExcludedSeries);
-
+					
 					// We have found something...
-					if (!foundStandartValuesForR2.isEmpty()) {
+					if (!foundStandartValuesForR2.hasNoSolution()) {
 						
-						// For the time being only the first value found for R2 is used....
-						ResistorResult firstStadardValueForR2=foundStandartValuesForR2.get(0);
+						// Among all solutions found, we consider only the resistor with the value
+						// closest to the resistor value we were looking for....
+						ResistorResult firstStadardValueForR2=foundStandartValuesForR2.getBestMatchingResistor();
 						
 						//
 						// Create a result for this divider.

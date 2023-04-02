@@ -9,7 +9,7 @@ import VoltageDiv.DividerResults;
 import VoltageDiv.DrawResult;
 import VoltageDiv.GetResistors;
 import VoltageDiv.ResistorResult;
-
+import VoltageDiv.ResistorResults;
 import htmlBuilder.Table;
 
 /**
@@ -64,23 +64,27 @@ public class Main {
 		// Check if a given value with an given error margin in percent
 		// can be found in any of the series E3..E96
 		//
-		double resistorNeeded = 1.8;
-		double errorMarginAllowedIn_P = 0;
+		double resistorNeeded = 1563;
+		double errorMarginAllowedIn_P = 25;
 
 		System.out.println("Checking which standard value can be found closest to " + resistorNeeded + " Ohm");
 
-		List<ResistorResult> resultList = new ArrayList<>();
+		ResistorResults resultList = new ResistorResults();
 		resultList = GetResistors.getRValueClosestTo(resistorNeeded, errorMarginAllowedIn_P, excludeSeries);
 
-		if (!resultList.isEmpty()) {
+		if (resultList.hasNoSolution())
+			System.out.println("No matching standard value found for:" + resistorNeeded + " Ohm");
 
-			for (ResistorResult r : resultList) {
+		else {
+			List<ResistorResult> results = resultList.getListOfResults();
+			for (ResistorResult r : results) {
 				System.out.println("Found:" + r.getFoundResistorValue_Ohms() + " Ohms . Actual error:"
 						+ r.getActualError_P() + "% Series specific error margin +/-:"
 						+ r.getSeriesSpecificErrorMargin() + "%    Found in Series E" + r.getESeries());
 			}
-		} else
-			System.out.println("No matching standard value found for:" + resistorNeeded + " Ohm");
+		}
+		
+		System.out.println("Best solution:"+resultList.getBestMatchingResistor().getFoundResistorValue_Ohms()+" Ohm");
 
 		System.out.println("");
 

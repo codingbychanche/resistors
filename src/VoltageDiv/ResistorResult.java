@@ -10,13 +10,12 @@ package VoltageDiv;
  *         4.0)
  *
  */
-public class ResistorResult {
-	private double foundResistorValue_Ohms;
-	private double givenResistorValue_Ohms;
+public class ResistorResult implements Comparable<ResistorResult> {
+	private double givenResistorValue_Ohms; 	// Initial value searched for
+	private double foundResistorValue_Ohms; // Found resistor
 	private int belongsToESeries;
-	private double actualError_P; // Error between value searched and standard value found.
-	private double seriesSpecificErrorMargin; // Error +/- in percent for the series the resistor belongs to.
-	private boolean found;
+	private double actualError_P; 				// Error between value searched and standard value found.
+	private double seriesSpecificErrorMargin; 	// Error +/- in percent for the series the resistor belongs to.
 
 	/**
 	 * Creates a new result for a resistor.
@@ -36,7 +35,6 @@ public class ResistorResult {
 		this.givenResistorValue_Ohms = givenResistorValue_Ohms;
 		this.belongsToESeries = belongsToESeries;
 		this.seriesSpecificErrorMargin = seriesSpecificErrorMargin;
-		this.found = found;
 	}
 
 	/**
@@ -79,13 +77,20 @@ public class ResistorResult {
 	public double getSeriesSpecificErrorMargin() {
 		return this.seriesSpecificErrorMargin;
 	}
-
+	
 	/**
-	 * Solution has been found?
+	 * Sorts all results by actual error between value searched for and value found 
+	 * in any of the E- series.
 	 * 
-	 * @return True if a solution for this resistor has been found...
+	 * @param r An instance of type {@link ResistorResult}
+	 * @return An integer either 1 or 0.
 	 */
-	public boolean found() {
-		return found;
+	@Override
+	public int compareTo(ResistorResult r) {
+		if (Math.abs(this.getActualError_P()) > Math.abs(r.getActualError_P()))
+			return 1;
+		if (Math.abs(this.getActualError_P()) < Math.abs(r.getActualError_P()))
+			return -1;
+		return 0;
 	}
 }
